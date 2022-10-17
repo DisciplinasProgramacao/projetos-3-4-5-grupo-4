@@ -1,9 +1,11 @@
 package codigo;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class App{
                 carregaArquivo("");
                 return true;
             case "2":
-                salvarArquivo();;
+                salvarArquivo();
                 return true;
             case "3":
                 criaVeiculo();
@@ -127,6 +129,27 @@ public class App{
 
     private static void salvarArquivo(){
 
+        File file = new File("");
+
+        try {
+
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for(Veiculo veiculo : veiculos){
+
+                bufferedWriter.append(veiculo.getClass() + ";" + veiculo.getPlaca() + ";" + 
+                veiculo.getValorVenda() + ";" + veiculo.getKmMedio() + "\n");
+
+            }
+
+            fileWriter.close();
+            bufferedWriter.close();
+        
+        } catch (IOException e) {
+            
+            throw new RuntimeException("ERROR: " + e);
+        }
     }
 
     /**
