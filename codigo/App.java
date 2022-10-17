@@ -127,6 +127,9 @@ public class App{
         }
     }
 
+    /**
+     * método criado para salvar um arquivo com os dados do vetor de veículos
+     */
     private static void salvarArquivo(){
 
         File file = new File("");
