@@ -23,6 +23,9 @@ public class App{
 
     /* métodos públicos */
 
+    /**
+     * uma interface pública para os acessos aos métodos.
+     */
     public static void interfaceUsuario(){
         
         String escolha;
@@ -41,6 +44,9 @@ public class App{
 
     /* métodos privados */
 
+    /**
+     * imprimi as opções disponíveis ao usuário
+     */
     private static void imprimiOpcoes(){
 
         System.out.println("0 - Sair");
@@ -53,6 +59,10 @@ public class App{
 
     }
 
+    /**
+     * @param escolha -> recebe a esoclha da opção do usuário
+     * @return -> retorna true para caso seja para continuar a aplicação e false para encerrar
+     */
     private static boolean trataOpcoes(String escolha){
 
         switch(escolha){
@@ -119,6 +129,9 @@ public class App{
 
     }
 
+    /**
+     * cria um veículo através de dados colteados pelo usuário
+     */
     private static void criaVeiculo(){
 
         System.out.println("Informe o tipo do veículo: ");
@@ -144,7 +157,7 @@ public class App{
     private static Veiculo criarVeiculo(String tipo, String placa, String valor_venda, String km_medio){
 
         tipo = tipo.toLowerCase();
-        
+
         double valor_venda_convertido = Double.parseDouble(valor_venda);
         double km_medio_convertido = Double.parseDouble(km_medio);
         
