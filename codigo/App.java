@@ -46,6 +46,12 @@ public class App{
 
     /* métodos privados */
 
+    /**
+     * @param placa -> recebe a placa do veículo a ser procurado
+     * @param tratamento -> dependendo do método que chama esta função ele devolve um resultado diferente
+     *, então, para que cada tratamento seja feito em uma mesma função, ele trata cada caso de um jeito específico
+     * @return -> retorna o veículo achado
+     */
     private static Veiculo retornaVeiculo(String placa, String tratamento){
 
         if(veiculos.size() == 0){
@@ -74,6 +80,9 @@ public class App{
 
     }
 
+    /**
+     * pega as informações para incluir uma rota
+     */
     private static void incluirRota(){
 
         System.out.println("Informe a placa do veículo que será feita a rota: ");
@@ -88,6 +97,11 @@ public class App{
 
     }
 
+    /**
+     * @param data -> recebe a data da rota
+     * @param km_total -> recebe o tamanho da rota
+     * @param veiculo -> recebe o veículo que fez a rota
+     */
     private static void criaRota(String data, String km_total, Veiculo veiculo){
 
         veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
@@ -226,9 +240,9 @@ public class App{
 
     /**
      * @param tipo -> recebe o tipo do veículo a ser criado
-     * @param placa -> atributo
-     * @param valor_venda -> atributo
-     * @param km_medio -> atributo
+     * @param placa -> placa do veículo
+     * @param valor_venda -> valor de venda do veículo
+     * @param km_medio -> valor de kilometragem média por litro do veículo
      * @return -> Retorna o veículo criado
      */
     private static Veiculo criarVeiculo(String tipo, String placa, String valor_venda, String km_medio){
