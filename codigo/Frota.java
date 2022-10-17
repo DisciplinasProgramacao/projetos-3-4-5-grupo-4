@@ -1,6 +1,7 @@
 package codigo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Frota {
     private ArrayList<Veiculo> veiculos;
@@ -65,5 +66,9 @@ public class Frota {
             return aux.gerarRelatorio();
         else
             return "Não possível localizar o veículo no sistema";
+    }
+
+    public List<Veiculo> getVeiculos(){
+        return this.veiculos;
     }
 }

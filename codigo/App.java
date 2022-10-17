@@ -7,13 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class App{
 
-    private static List<Veiculo> veiculos = new ArrayList<>();  
+    private static Frota frota;  
     private static Scanner teclado = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -47,6 +45,28 @@ public class App{
     /* métodos privados */
 
     /**
+     * método pára procuar veiculo de frota e gerar o relatório
+     * @param isGerarRelatorio -> se for para gerar o relatório a variável vem como true
+     */
+    private static void localizaVeiculoFrota(boolean isGerarRelatorio){
+
+        System.out.println("Informe a placa do veículo");
+        String placa = teclado.nextLine();
+
+        Veiculo veiculo = retornaVeiculo(placa, "placaFinalizar");
+        
+        if(veiculo != null){
+            
+            if(isGerarRelatorio){
+                veiculo.gerarRelatorio();
+            }else{
+                System.out.println("Veículo existe");
+            }    
+        }
+
+    }  
+
+    /**
      * @param placa -> recebe a placa do veículo a ser procurado
      * @param tratamento -> dependendo do método que chama esta função ele devolve um resultado diferente
      *, então, para que cada tratamento seja feito em uma mesma função, ele trata cada caso de um jeito específico
@@ -54,25 +74,28 @@ public class App{
      */
     private static Veiculo retornaVeiculo(String placa, String tratamento){
 
-        if(veiculos.size() == 0){
+        if(frota.getVeiculos().size() == 0){
             System.out.println("Não existe veículos cadastrados");
         }
 
 
-        for(Veiculo veiculo : veiculos){
+        Veiculo veiculo = frota.localizarVeiculo(placa);
 
-            if(veiculo.getPlaca().equals(placa)){
-                return veiculo;
-            }
-
+        if(veiculo != null){
+            return veiculo;
         }
 
-        if(tratamento.equals("incluirRota")){
+        if(tratamento.contains("placa")){
 
-            System.out.println("Veiculo não existe, informe uma placa válida: ");
-            String placa_nova = teclado.nextLine();
-            retornaVeiculo(placa_nova, "incluirRota");
+            System.out.println("Veiculo não existe");
 
+            if(tratamento.contains("Finalizar")){
+                return null;
+            }else{
+                System.out.println("Informe uma placa válida: ");
+                String placa_nova = teclado.nextLine();
+                retornaVeiculo(placa_nova, "incluirRota");
+            }
         }
 
         return null;
@@ -87,7 +110,7 @@ public class App{
 
         System.out.println("Informe a placa do veículo que será feita a rota: ");
         String placa = teclado.nextLine();
-        Veiculo veiculo = retornaVeiculo(placa, "incluirRota");
+        Veiculo veiculo = retornaVeiculo(placa, "placa");
         System.out.println("Informe o tamanho da rota: ");
         String km_total = teclado.nextLine();
         System.out.println("Informe a data que foi feita a rota: ");
@@ -144,7 +167,13 @@ public class App{
                 return true;
             case "4":
                 incluirRota();
-                return true;    
+                return true;
+            case "5":
+                localizaVeiculoFrota(false);
+                return true;
+            case "6":
+                localizaVeiculoFrota(true);
+                return true;        
             default:
                 System.out.println("Escolha inválida");
                 return true;
@@ -204,7 +233,7 @@ public class App{
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-            for(Veiculo veiculo : veiculos){
+            for(Veiculo veiculo : frota.getVeiculos()){
 
                 bufferedWriter.append(veiculo.getClass() + ";" + veiculo.getPlaca() + ";" + 
                 veiculo.getValorVenda() + ";" + veiculo.getKmMedio() + "\n");
