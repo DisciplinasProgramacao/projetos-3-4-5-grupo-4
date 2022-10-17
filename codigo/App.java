@@ -19,6 +19,13 @@ public class App{
 
     }
 
+    /* métodos públicos */
+
+    /* métodos privados */
+
+    /**
+     * @param path -> recebe o caminho do arquivo e faz o seu tratamento
+     */
     private static void carregaArquivo(String path){
 
         File file = new File(path);
@@ -55,7 +62,15 @@ public class App{
         }
     }
 
-    private static void criarVeiculo(String tipo, String placa, String valor_venda, String km_medio){
+
+    /**
+     * @param tipo -> recebe o tipo do veículo a ser criado
+     * @param placa -> atributo
+     * @param valor_venda -> atributo
+     * @param km_medio -> atributo
+     * @return -> Retorna o veículo criado
+     */
+    private static Veiculo criarVeiculo(String tipo, String placa, String valor_venda, String km_medio){
 
         switch(tipo){
 
@@ -75,8 +90,9 @@ public class App{
                 //veiculos.add(Caminhao);
                 //Caminhao caminhao = new Caminhao(...);
                 break;            
-
         }
+
+        return null;
 
     }
 }
