@@ -46,6 +46,54 @@ public class App{
 
     /* métodos privados */
 
+    private static Veiculo retornaVeiculo(String placa, String tratamento){
+
+        if(veiculos.size() == 0){
+            System.out.println("Não existe veículos cadastrados");
+        }
+
+
+        for(Veiculo veiculo : veiculos){
+
+            if(veiculo.getPlaca().equals(placa)){
+                return veiculo;
+            }
+
+        }
+
+        if(tratamento.equals("incluirRota")){
+
+            System.out.println("Veiculo não existe, informe uma placa válida: ");
+            String placa_nova = teclado.nextLine();
+            retornaVeiculo(placa_nova, "incluirRota");
+
+        }
+
+        return null;
+        
+
+    }
+
+    private static void incluirRota(){
+
+        System.out.println("Informe a placa do veículo que será feita a rota: ");
+        String placa = teclado.nextLine();
+        Veiculo veiculo = retornaVeiculo(placa, "incluirRota");
+        System.out.println("Informe o tamanho da rota: ");
+        String km_total = teclado.nextLine();
+        System.out.println("Informe a data que foi feita a rota: ");
+        String data = teclado.nextLine();
+
+        criaRota(data, km_total, veiculo);
+
+    }
+
+    private static void criaRota(String data, String km_total, Veiculo veiculo){
+
+        veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
+
+    }
+
     /**
      * imprimi as opções disponíveis ao usuário
      */
@@ -80,6 +128,9 @@ public class App{
             case "3":
                 criaVeiculo();
                 return true;
+            case "4":
+                incluirRota();
+                return true;    
             default:
                 System.out.println("Escolha inválida");
                 return true;
