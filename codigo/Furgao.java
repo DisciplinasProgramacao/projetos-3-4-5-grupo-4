@@ -3,12 +3,12 @@ package codigo;
 public class Furgao extends Veiculo{
     @Override
     public double calcularSeguro() {
-        return 0;
-    }
+        return this.getValorVenda()*0.03;
+        }
 
     @Override
     public double calcularIPVA() {
-        return 0;
+        return this.getValorVenda()*0.03;
     }
 
     @Override
