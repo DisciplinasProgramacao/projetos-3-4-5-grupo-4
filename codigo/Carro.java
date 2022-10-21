@@ -15,4 +15,11 @@ public class Carro extends Veiculo{
     public double calcularCustos() {
         return 0;
     }
+    
+    public String gerarRelatorio() {
+        return "Carro :" +
+        "Placa: " + this.getPlaca() + "\n"+
+        "Número de Rotas realizadas" + this.rotas.size() + "\n" +
+        "Total de Gastos: " + String.format("%02d",this.calcularCustos());
+    }
 }
