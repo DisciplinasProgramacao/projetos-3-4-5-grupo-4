@@ -1,5 +1,6 @@
 package codigo;
 
+
 import java.util.ArrayList;
 
 /**
@@ -9,11 +10,12 @@ public abstract class  Veiculo {
 
     private String placa;
     private double valorVenda;
-    private double TANQUE;
-    private double IPVA;
-    private double seguro;
-    private static double kmMedio;
-    private ArrayList<Rota> Rotas;
+    protected double TANQUE;
+    
+
+
+    private  double kmMedio;
+    protected ArrayList<Rota> rotas;
 
     
     public abstract double calcularSeguro();
@@ -23,16 +25,26 @@ public abstract class  Veiculo {
 
     public abstract double calcularCustos();
 
-    private boolean validarRota(){
-        return false;
+    private boolean validarRota(Rota rota){
+        double kmMaxima = this.TANQUE * this.kmMedio;
+        if(rota.getKmTotal() < kmMaxima)
+            return true;
+        else
+            return false;
     }
 
-    public String gerarRelatorio(){
-        return "";
-    }
+    /**
+     * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas e o total de gastos
+     * @return String
+     */
+    public abstract String gerarRelatorio();
 
     public boolean addRota(Rota rota){
-        return this.Rotas.add(rota);
+        if(this.validarRota(rota))
+            return this.rotas.add(rota);
+        else
+            return false;
+        
     }
 
     public String getPlaca(){
@@ -49,8 +61,17 @@ public abstract class  Veiculo {
     }
 
 
-    public static double getKmMedio() {
+    public double getKmMedio() {
         return kmMedio;
+    }
+
+    public double getTANQUE() {
+        return TANQUE;
+    }
+
+
+    public void setTANQUE(double tANQUE) {
+        TANQUE = tANQUE;
     }
 
     
