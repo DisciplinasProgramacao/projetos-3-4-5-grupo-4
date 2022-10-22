@@ -4,15 +4,14 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 ## Alunos integrantes da equipe
 
-* arthur rodrigues lanza avelar1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 4
-* Nome completo do aluno 4
+* Arthur Alexi Moreira Menezes
+* Arthur Rodrigues Lanza Avelar
+* Frederico dos Santos Ferreira de Andrade
+* Pablo Augusto Carneiro Magalhães
+
 
 ## Professores responsáveis
 
-* Nome completo do professor 1
-* Nome completo do professor 2
+* João Caram Santos de Oliveira
+
 
