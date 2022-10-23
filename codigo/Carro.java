@@ -13,7 +13,9 @@ public class Carro extends Veiculo{
 
     @Override
     public double calcularCustos() {
-        return 0;
+        double custoAlinhamento = 80.0;
+        int quociente =(int) this.quilometragem()/10000;
+        return custoAlinhamento * quociente;
     }
     
     public String gerarRelatorio() {
