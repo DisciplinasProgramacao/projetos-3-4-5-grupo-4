@@ -25,6 +25,22 @@ public abstract class  Veiculo {
 
     public abstract double calcularCustos();
 
+    /**
+     * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas e o total de gastos
+     * @return String
+     */
+    public abstract String gerarRelatorio();
+
+    public double quilometragem(){
+        double km=0;
+
+        for(int i =0;i < this.rotas.size(); i++){
+            km += this.rotas.get(i).getKmTotal();
+        }
+        
+        return km;
+    }
+
     private boolean validarRota(Rota rota){
         double kmMaxima = this.TANQUE * this.kmMedio;
         if(rota.getKmTotal() < kmMaxima)
@@ -33,11 +49,7 @@ public abstract class  Veiculo {
             return false;
     }
 
-    /**
-     * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas e o total de gastos
-     * @return String
-     */
-    public abstract String gerarRelatorio();
+    
 
     public boolean addRota(Rota rota){
         if(this.validarRota(rota))
