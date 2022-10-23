@@ -1,14 +1,27 @@
 package codigo;
 
+import java.util.ArrayList;
+
 public class Van extends Veiculo{
+
+    Van(){super();}
+
+    Van(String placa, ArrayList<Rota> rotas){
+        setPlaca(placa);
+        setTANQUE(60);
+        for(Rota rota : rotas) {
+            addRota(rota);
+        }
+    }
+
     @Override
     public double calcularSeguro() {
-        return 0;
+        return this.getValorVenda()*0.03;
     }
 
     @Override
     public double calcularIPVA() {
-        return 0;
+        return this.getValorVenda()*0.03;
     }
 
     @Override

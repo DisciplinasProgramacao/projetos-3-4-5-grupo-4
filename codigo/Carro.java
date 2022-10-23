@@ -21,7 +21,7 @@ public class Carro extends Veiculo{
 
     @Override
     public double calcularIPVA() {
-        return  this.getValorVenda()*0.04;
+        return this.getValorVenda()*0.04;
     }
 
     @Override
