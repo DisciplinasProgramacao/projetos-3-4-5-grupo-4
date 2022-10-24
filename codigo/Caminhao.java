@@ -13,7 +13,13 @@ public class Caminhao extends Veiculo{
 
     @Override
     public double calcularCustos() {
-        return 0 ;
+        double custoManutencao = 1000.0;
+        double custoVistoria = 1000.0;
+        int quociente1 =(int) this.quilometragem()/20000;
+        int quociente2 =(int) this.quilometragem()/30000;
+
+        double custoTotal = custoManutencao*quociente1 + custoVistoria*quociente2;
+        return custoTotal;
     }
     
     @Override

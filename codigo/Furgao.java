@@ -13,7 +13,11 @@ public class Furgao extends Veiculo{
 
     @Override
     public double calcularCustos() {
-        return 0;
+        double custoAlinhamento = 120.0;
+        double custoVistoria = 500.0;
+        int quociente =(int) this.quilometragem()/10000;
+        double custoTotal = (custoAlinhamento + custoVistoria ) * quociente;
+        return custoTotal;
     }
     
     @Override
