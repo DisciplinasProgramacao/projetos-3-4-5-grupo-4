@@ -6,9 +6,10 @@ public class Van extends Veiculo{
 
     Van(){super();}
 
-    Van(String placa, ArrayList<Rota> rotas){
-        setPlaca(placa);
-        setTANQUE(60);
+    public Van(String placa, ArrayList<Rota> rotas, double valorVenda){
+        this.setPlaca(placa);
+        this.setTANQUE(60);
+        this.setValorVenda(valorVenda);
         for(Rota rota : rotas) {
             addRota(rota);
         }

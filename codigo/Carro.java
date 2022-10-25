@@ -6,9 +6,10 @@ public class Carro extends Veiculo{
 
     Carro(){super();}
 
-    Carro(String placa, ArrayList<Rota> rotas){
-        setPlaca(placa);
-        setTANQUE(50);
+    public Carro(String placa, ArrayList<Rota> rotas, double valorVenda){
+        this.setPlaca(placa);
+        this.setTANQUE(50);
+        this.setValorVenda(valorVenda);
         for(Rota rota : rotas) {
             addRota(rota);
         }
@@ -16,7 +17,7 @@ public class Carro extends Veiculo{
 
     @Override
     public double calcularSeguro() {
-        return this.getValorVenda()*0.05+3000;
+        return (this.getValorVenda()*0.05)+300;
     }
 
     @Override
