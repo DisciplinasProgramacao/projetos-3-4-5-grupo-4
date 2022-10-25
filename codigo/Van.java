@@ -33,6 +33,7 @@ public class Van extends Veiculo{
         return custoTotal;
     }
     
+    
     @Override
     public String gerarRelatorio() {
         return "Van :" +
