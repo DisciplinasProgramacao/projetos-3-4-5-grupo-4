@@ -31,11 +31,15 @@ public class testesSeguro {
         Van van = new Van(placa, rotas, valorVenda);
         assertEquals(3, van.calcularSeguro(), 0.1);
     }
+    
+    @Test
     public void furgaoseguro(){
         rotas.add(rota);
         Furgao fur = new Furgao(placa, rotas, valorVenda);
         assertEquals(3, fur.calcularSeguro(), 0.1);
     }
+    
+    @Test
     public void caminhaoseguro(){
         rotas.add(rota);
         Caminhao car = new Caminhao(placa, rotas, valorVenda);
