@@ -1,6 +1,8 @@
 package testes;
 
+import codigo.Caminhao;
 import codigo.Carro;
+import codigo.Furgao;
 import codigo.Rota;
 import codigo.Van;
 import org.junit.Test;
@@ -27,6 +29,16 @@ public class testesSeguro {
     public void vanSeguro(){
         rotas.add(rota);
         Van van = new Van(placa, rotas, valorVenda);
-        assertEquals(3, van.calcularIPVA(), 0.1);
+        assertEquals(3, van.calcularSeguro(), 0.1);
+    }
+    public void furgaoseguro(){
+        rotas.add(rota);
+        Furgao fur = new Furgao(placa, rotas, valorVenda);
+        assertEquals(3, fur.calcularSeguro(), 0.1);
+    }
+    public void caminhaoseguro(){
+        rotas.add(rota);
+        Caminhao car = new Caminhao(placa, rotas, valorVenda);
+        assertEquals(2002, car.calcularSeguro(), 0.1);
     }
 }
