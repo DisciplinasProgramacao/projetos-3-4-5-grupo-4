@@ -1,8 +1,16 @@
 package codigo;
-
+import java.util.ArrayList;
 public class Caminhao extends Veiculo{
 
     Caminhao(){super();}
+    public Caminhao(String placa, ArrayList<Rota> rotas, double valorVenda){
+        this.setPlaca(placa);
+        this.setTANQUE(250);
+        this.setValorVenda(valorVenda);
+        for(Rota rota : rotas) {
+            addRota(rota);
+        }
+    }
     @Override
     public double calcularSeguro() {
         return this.getValorVenda()*0.02+2000;

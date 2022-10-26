@@ -1,7 +1,19 @@
 package codigo;
+import java.util.ArrayList;
 
 public class Furgao extends Veiculo{
     Furgao(){super();}
+
+    public Furgao(String placa, ArrayList<Rota> rotas, double valorVenda){
+        this.setPlaca(placa);
+        this.setTANQUE(80);
+        this.setValorVenda(valorVenda);
+        for(Rota rota : rotas) {
+            addRota(rota);
+        }
+    }
+
+
     @Override
     public double calcularSeguro() {
         return this.getValorVenda()*0.03;
