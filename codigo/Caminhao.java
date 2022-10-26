@@ -1,6 +1,8 @@
 package codigo;
 
 public class Caminhao extends Veiculo{
+
+    Caminhao(){super();}
     @Override
     public double calcularSeguro() {
         return this.getValorVenda()*0.02+2000;
