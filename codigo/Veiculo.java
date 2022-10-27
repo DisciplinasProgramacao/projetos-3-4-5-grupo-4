@@ -91,6 +91,7 @@ public abstract class  Veiculo {
     public void setTANQUE(double tANQUE) {
         TANQUE = tANQUE;
     }
+    public void setValorVenda(double valorVenda) {this.valorVenda = valorVenda;}
 
     
     

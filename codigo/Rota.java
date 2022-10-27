@@ -13,7 +13,7 @@ public class Rota {
      * @param data -> Formato DD/MM/YYYY
      * @param km -> caso for menor que 0, o valor atribuido será 0
      */
-    Rota(String data, double km ){
+    public Rota(String data, double km){
         this.setData(data);
         this.setKmTotal(km);
     }

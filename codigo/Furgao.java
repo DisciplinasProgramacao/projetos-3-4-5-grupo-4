@@ -1,5 +1,6 @@
 package codigo;
 
+
 public class Furgao extends Veiculo{
     
     Furgao(String placa, double valorVenda, double kmMedio) {

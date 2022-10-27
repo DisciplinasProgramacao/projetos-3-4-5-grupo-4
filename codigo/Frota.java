@@ -30,16 +30,6 @@ public class Frota {
         return null;
     }
 
-    /**
-     * Lê um arquivo com veículo e preenche a lista de veículos
-     * 
-     * @param caminhoArquivo -> caminho do Arquivo a ser lido
-     * @return true caso o arquivo tenha sido lido com sucesso, false caso tenha
-     *         dado algum erro
-     */
-    public boolean carregarArquivo(String caminhoArquivo) {
-        return true;
-    }
 
     /**
      * 

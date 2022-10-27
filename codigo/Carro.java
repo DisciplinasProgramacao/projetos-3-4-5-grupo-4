@@ -13,7 +13,7 @@ public class Carro extends Veiculo{
 
     @Override
     public double calcularSeguro() {
-        return this.getValorVenda()*0.05+3000;
+        return (this.getValorVenda()*0.05)+300;
     }
 
     @Override
