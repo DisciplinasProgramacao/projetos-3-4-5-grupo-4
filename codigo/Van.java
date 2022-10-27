@@ -1,17 +1,13 @@
 package codigo;
 
-import java.util.ArrayList;
+
 
 public class Van extends Veiculo{
 
-    Van(){super();}
 
-    Van(String placa, ArrayList<Rota> rotas){
-        setPlaca(placa);
-        setTANQUE(60);
-        for(Rota rota : rotas) {
-            addRota(rota);
-        }
+    Van(String placa, double valorVenda, double kmMedio) {
+        super(placa, valorVenda, kmMedio);
+        //TODO Auto-generated constructor stub
     }
 
     @Override

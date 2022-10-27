@@ -1,6 +1,12 @@
 package codigo;
 
 public class Furgao extends Veiculo{
+    
+    Furgao(String placa, double valorVenda, double kmMedio) {
+        super(placa, valorVenda, kmMedio);
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public double calcularSeguro() {
         return this.getValorVenda()*0.03;

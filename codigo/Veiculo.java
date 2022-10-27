@@ -10,14 +10,20 @@ public abstract class  Veiculo {
 
     private String placa;
     private double valorVenda;
-    protected double TANQUE;
+    private double TANQUE;
+    
     
 
 
     private  double kmMedio;
     protected ArrayList<Rota> rotas;
 
-    
+    Veiculo(String placa, double valorVenda, double kmMedio){
+        this.placa = placa;
+        this.valorVenda = valorVenda;
+        this.kmMedio = kmMedio;
+    }
+
     public abstract double calcularSeguro();
 
     

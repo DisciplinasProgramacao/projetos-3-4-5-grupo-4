@@ -1,17 +1,14 @@
 package codigo;
 
-import java.util.ArrayList;
 
 public class Carro extends Veiculo{
 
-    Carro(){super();}
+    
 
-    Carro(String placa, ArrayList<Rota> rotas){
-        setPlaca(placa);
-        setTANQUE(50);
-        for(Rota rota : rotas) {
-            addRota(rota);
-        }
+    
+
+    public Carro(String placa, double valorVenda, double kmMedio) {
+        super(placa, valorVenda, kmMedio);
     }
 
     @Override

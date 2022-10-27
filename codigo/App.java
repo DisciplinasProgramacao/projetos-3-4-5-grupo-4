@@ -284,22 +284,22 @@ public class App{
         switch(tipo){
 
             case "carro":
-                //Carro carro = new Carro(...);
-                //veiculos.add(carro);
+                Carro carro = new Carro(placa, valor_venda_convertido, km_medio_convertido);
+                frota.addVeiculo(carro);
                 break;
             case "van":
-                //Van van = new Van(...);
-                //veiculos.add(van);
+                Van van = new Van(placa, valor_venda_convertido, km_medio_convertido);
+                frota.addVeiculo(van);
                 break;
             case "furgao":
             case "furgão":
-                //Furgao furgao = new Furgao(...);
-                //veiculos.add(Furgao);
+                Furgao furgao = new Furgao(placa, valor_venda_convertido, km_medio_convertido);
+                frota.addVeiculo(furgao);
                 break;
             case "caminhao":
             case "caminhão":
-                //veiculos.add(Caminhao);
-                //Caminhao caminhao = new Caminhao(...);
+                Caminhao caminhao = new Caminhao(placa, valor_venda_convertido, km_medio_convertido);
+                frota.addVeiculo(caminhao);
                 break;
             default:
                 System.out.println("Este tipo não existe, informe um válido (Carro, Van, Furgao ou Caminhao): ");
