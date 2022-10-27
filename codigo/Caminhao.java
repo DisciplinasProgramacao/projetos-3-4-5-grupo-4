@@ -1,7 +1,7 @@
 package codigo;
 
 public class Caminhao extends Veiculo{
-    Caminhao(String placa, double valorVenda, double kmMedio) {
+    public Caminhao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
         //TODO Auto-generated constructor stub
     }

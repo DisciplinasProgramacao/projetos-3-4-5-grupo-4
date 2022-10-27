@@ -3,7 +3,7 @@ package codigo;
 
 public class Furgao extends Veiculo{
     
-    Furgao(String placa, double valorVenda, double kmMedio) {
+    public Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
         //TODO Auto-generated constructor stub
     }
