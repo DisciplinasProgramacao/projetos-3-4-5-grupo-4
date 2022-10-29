@@ -5,9 +5,6 @@ public class Rota {
     private Data data;
     private double kmTotal;
 
-    Rota(){
-
-    }
     /**
      * 
      * @param data -> Formato DD/MM/YYYY

@@ -6,27 +6,20 @@ import java.util.ArrayList;
 /**
  * Veiculo
  */
-public abstract class  Veiculo {
+public abstract class Veiculo implements IConstants {
 
-    private String placa;
-    private double valorVenda;
-    private double TANQUE;
-    
-    
+    // Atributos
 
-
-    private  double kmMedio;
+    protected String placa;
+    protected double valorVenda;
+    protected double TANQUE;
+    protected  double kmMedio;
     protected ArrayList<Rota> rotas;
 
-    Veiculo(String placa, double valorVenda, double kmMedio){
-        this.placa = placa;
-        this.valorVenda = valorVenda;
-        this.kmMedio = kmMedio;
-    }
+    //Métodos abstratos
 
     public abstract double calcularSeguro();
 
-    
     public abstract double calcularIPVA();
 
     public abstract double calcularCustos();
@@ -37,10 +30,22 @@ public abstract class  Veiculo {
      */
     public abstract String gerarRelatorio();
 
+    // Construtor
+
+    Veiculo(String placa, double valorVenda, double kmMedio){
+        this.placa = placa;
+        this.valorVenda = valorVenda;
+        this.kmMedio = kmMedio;
+        this.rotas = new ArrayList<>();
+    }
+
+    //Métodos
+
     public double quilometragem(){
+        
         double km=0;
 
-        for(int i =0;i < this.rotas.size(); i++){
+        for(int i = 0 ; i < this.rotas.size() ; i++){
             km += this.rotas.get(i).getKmTotal();
         }
         
@@ -54,8 +59,6 @@ public abstract class  Veiculo {
         else
             return false;
     }
-
-    
 
     public boolean addRota(Rota rota){
         if(this.validarRota(rota))
@@ -73,11 +76,9 @@ public abstract class  Veiculo {
         this.placa = placa;
     }
 
-
     public double getValorVenda() {
         return valorVenda;
     }
-
 
     public double getKmMedio() {
         return kmMedio;
@@ -87,11 +88,13 @@ public abstract class  Veiculo {
         return TANQUE;
     }
 
-
     public void setTANQUE(double tANQUE) {
         TANQUE = tANQUE;
     }
-    public void setValorVenda(double valorVenda) {this.valorVenda = valorVenda;}
+    
+    public void setValorVenda(double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
 
     
     

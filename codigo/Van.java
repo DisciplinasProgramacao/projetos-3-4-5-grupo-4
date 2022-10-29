@@ -1,40 +1,44 @@
 package codigo;
 
-
-
 public class Van extends Veiculo{
 
+    // Construtor
 
     public Van(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        //TODO Auto-generated constructor stub
+        this.TANQUE = TANQUE_VAN;
     }
+
+    //Overrides
 
     @Override
     public double calcularSeguro() {
-        return this.getValorVenda()*0.03;
+        return this.valorVenda * IPVA_SEGURO_VAN_FURGAO;
     }
 
     @Override
     public double calcularIPVA() {
-        return this.getValorVenda()*0.03;
+        return this.valorVenda * IPVA_SEGURO_VAN_FURGAO;
     }
 
     @Override
     public double calcularCustos() {
-        double custoAlinhamento = 120.0;
-        double custoVistoria = 500.0;
-        int quociente =(int) this.quilometragem()/10000;
-        double custoTotal = (custoAlinhamento + custoVistoria ) * quociente;
-        return custoTotal;
+        
+        double km_rodados = this.quilometragem();
+
+        if(km_rodados == 0){
+            return 0;
+        }
+
+        return (CUSTOALINHAMENTO_VAN_FURGAO + CUSTOVISTORIA_VAN_FURGAO ) * (km_rodados / KM_VISTORIA_VAN_FURGAO);
     }
     
     
     @Override
     public String gerarRelatorio() {
         return "Van :" +
-        "Placa: " + this.getPlaca() + "\n"+
-        "Número de Rotas realizadas" + this.rotas.size() + "\n" +
-        "Total de Gastos: " + String.format("%02d",this.calcularCustos());
+        "\nPlaca: " + this.getPlaca() + "\n"+
+        "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
+        "Total de Gastos: " + this.calcularCustos() + "R$";
     }
 }
