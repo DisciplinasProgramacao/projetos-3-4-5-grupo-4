@@ -89,8 +89,12 @@ public abstract class Veiculo implements IConstants {
         return kmMedio;
     }
 
-    public void setValorVenda(double valorVenda) {this.valorVenda = valorVenda;}
    
+    
+    public void setValorVenda(double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
+
     
 
     /**
