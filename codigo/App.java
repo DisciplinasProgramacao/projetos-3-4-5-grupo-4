@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class App{
 
-    private static Frota frota;  
+    private static Frota frota = new Frota();  
     private static Scanner teclado = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -58,7 +58,8 @@ public class App{
         if(veiculo != null){
             
             if(isGerarRelatorio){
-                veiculo.gerarRelatorio();
+                String relatorio = veiculo.gerarRelatorio();
+                System.out.println(relatorio);
             }else{
                 System.out.println("Veículo existe");
             }    
@@ -74,7 +75,7 @@ public class App{
      */
     private static Veiculo retornaVeiculo(String placa, String tratamento){
 
-        if(frota.getVeiculos().size() == 0){
+        if(frota.getVeiculos().isEmpty()){
             System.out.println("Não existe veículos cadastrados");
         }
 
@@ -157,10 +158,10 @@ public class App{
             case "0":
                 return false;
             case "1":
-                carregaArquivo("");
+                carregaArquivo("C:\\Users\\pablo\\Documents\\GitHub\\projetos-3-4-5-grupo-4\\codigo\\resources\\veiculos.txt");
                 return true;
             case "2":
-                salvarArquivo();
+                salvarArquivo("C:\\Users\\pablo\\Documents\\GitHub\\projetos-3-4-5-grupo-4\\codigo\\resources\\veiculosSalvos.txt");
                 return true;
             case "3":
                 criaVeiculo();
@@ -196,10 +197,10 @@ public class App{
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String linha = bufferedReader.readLine();
-
+            
             do{
 
-                String dados[] = linha.split(linha);
+                String[] dados = linha.split(";");
                 String tipo = dados[0];
                 String placa = dados[1];
                 String valor_venda = dados[2];
@@ -223,10 +224,11 @@ public class App{
 
     /**
      * método criado para salvar um arquivo com os dados do vetor de veículos
+     * @param path -> recebe o caminho do arquivo e faz o seu tratamento
      */
-    private static void salvarArquivo(){
+    private static void salvarArquivo(String path){
 
-        File file = new File("");
+        File file = new File(path);
 
         try {
 
@@ -234,14 +236,27 @@ public class App{
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             for(Veiculo veiculo : frota.getVeiculos()){
+                
+                String classe_imprimir = veiculo.getClass().getName();
 
-                bufferedWriter.append(veiculo.getClass() + ";" + veiculo.getPlaca() + ";" + 
-                veiculo.getValorVenda() + ";" + veiculo.getKmMedio() + "\n");
+                if(classe_imprimir.contains("Carro")){
+                    classe_imprimir = "Carro";
+                }else if(classe_imprimir.contains("Van")){
+                    classe_imprimir = "Van";
+                }else if(classe_imprimir.contains("Furgao")){
+                    classe_imprimir = "Furgao";
+                }else if(classe_imprimir.contains("Caminhao")){
+                    classe_imprimir = "Caminhao";
+                }
+                
 
+                bufferedWriter.write(classe_imprimir + ";" + veiculo.getPlaca() + ";" + 
+                veiculo.getValorVenda() + ";" + veiculo.getKmMedio());
+                bufferedWriter.newLine();
             }
 
-            fileWriter.close();
             bufferedWriter.close();
+            fileWriter.close();
         
         } catch (IOException e) {
             
@@ -284,22 +299,18 @@ public class App{
         switch(tipo){
 
             case "carro":
-                Carro carro = new Carro(placa, valor_venda_convertido, km_medio_convertido);
-                frota.addVeiculo(carro);
+                frota.addVeiculo(new Carro(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "van":
-                Van van = new Van(placa, valor_venda_convertido, km_medio_convertido);
-                frota.addVeiculo(van);
+                frota.addVeiculo(new Van(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "furgao":
             case "furgão":
-                Furgao furgao = new Furgao(placa, valor_venda_convertido, km_medio_convertido);
-                frota.addVeiculo(furgao);
+                frota.addVeiculo(new Furgao(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "caminhao":
             case "caminhão":
-                Caminhao caminhao = new Caminhao(placa, valor_venda_convertido, km_medio_convertido);
-                frota.addVeiculo(caminhao);
+                frota.addVeiculo(new Caminhao(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             default:
                 System.out.println("Este tipo não existe, informe um válido (Carro, Van, Furgao ou Caminhao): ");

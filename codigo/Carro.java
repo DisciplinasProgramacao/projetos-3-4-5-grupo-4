@@ -4,36 +4,43 @@ import codigo.resources.Tanque;
 
 public class Carro extends Veiculo{
 
-    
-
-    
+    //Construtor
 
     public Carro(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque(50);
+        this.TANQUE = new Tanque(TANQUE_CARRO);
     }
+
+    // Overrides
 
     @Override
     public double calcularSeguro() {
-        return (this.getValorVenda()*0.05)+300;
+        return (this.valorVenda * SEGURO_CARRO) + VALORADICIONALSEGURO_CARRO;
     }
 
     @Override
     public double calcularIPVA() {
-        return this.getValorVenda()*0.04;
+        return this.valorVenda * IPVA_CARRO;
     }
 
     @Override
     public double calcularCustos() {
-        double custoAlinhamento = 80.0;
-        int quociente =(int) this.quilometragem()/10000;
-        return custoAlinhamento * quociente;
+        
+        double km_rodados = this.quilometragem();
+
+        if(km_rodados == 0){
+            return 0;
+        }else{
+            return CUSTOALINHAMENTO_CARRO * (km_rodados / KM_VISTORIA_CARRO);
+        }
+    
     }
     
+    @Override
     public String gerarRelatorio() {
         return "Carro :" +
-        "Placa: " + this.getPlaca() + "\n"+
-        "Número de Rotas realizadas" + this.rotas.size() + "\n" +
-        "Total de Gastos: " + String.format("%02d",this.calcularCustos());
+        "\nPlaca: " + this.getPlaca() + "\n"+
+        "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
+        "Total de Gastos: " + this.calcularCustos() + "R$";
     }
 }

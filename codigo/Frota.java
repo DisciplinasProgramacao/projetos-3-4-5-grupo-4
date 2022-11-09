@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Frota {
+    
     private ArrayList<Veiculo> veiculos;
+
+    public Frota(){
+        this.veiculos = new ArrayList<>();
+    }
 
     /**
      * 
