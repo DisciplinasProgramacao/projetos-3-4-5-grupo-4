@@ -1,5 +1,6 @@
 package codigo;
 
+import codigo.resources.Tanque;
 
 public class Carro extends Veiculo{
 
@@ -9,6 +10,7 @@ public class Carro extends Veiculo{
 
     public Carro(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
+        this.TANQUE = new Tanque(50);
     }
 
     @Override

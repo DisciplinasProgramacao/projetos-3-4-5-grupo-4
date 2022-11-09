@@ -1,11 +1,12 @@
 package codigo;
 
+import codigo.resources.Tanque;
 
 public class Furgao extends Veiculo{
     
     Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        //TODO Auto-generated constructor stub
+        this.TANQUE= new Tanque(80);
     }
 
     @Override

@@ -3,6 +3,8 @@ package codigo;
 
 import java.util.ArrayList;
 
+import codigo.resources.Tanque;
+
 /**
  * Veiculo
  */
@@ -10,7 +12,7 @@ public abstract class  Veiculo {
 
     private String placa;
     private double valorVenda;
-    private double TANQUE;
+    protected Tanque TANQUE;
     
     
 
@@ -48,8 +50,8 @@ public abstract class  Veiculo {
     }
 
     private boolean validarRota(Rota rota){
-        double kmMaxima = this.TANQUE * this.kmMedio;
-        if(rota.getKmTotal() < kmMaxima)
+        
+        if(rota.getKmTotal() < this.TANQUE.distanciaPossivel())
             return true;
         else
             return false;
@@ -83,16 +85,15 @@ public abstract class  Veiculo {
         return kmMedio;
     }
 
-    public double getTANQUE() {
-        return TANQUE;
-    }
-
-
-    public void setTANQUE(double tANQUE) {
-        TANQUE = tANQUE;
-    }
     public void setValorVenda(double valorVenda) {this.valorVenda = valorVenda;}
 
-    
+    /**
+     * Caso passe uma quantidade maior que o tanque aguente, o valor excedente é ignorado
+     * @param litros -> quantidade que vai abastecer
+     * @return o valor final no tanque
+     */
+    public double abastecer(double litros){
+        return this.TANQUE.abastecer(litros);
+    }
     
 }
