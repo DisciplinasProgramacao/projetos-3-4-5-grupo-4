@@ -10,6 +10,7 @@ public class Tanque {
     public Tanque(int capacidade){
         this.capacidade = capacidade;
         //combustivel = new tipo();
+        
     }
 
     /**
