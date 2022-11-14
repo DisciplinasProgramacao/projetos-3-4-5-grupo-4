@@ -1,15 +1,15 @@
-package codigo.resources;
+package codigo;
 
 public class Tanque {
 
     private int capacidade;
-    private ICombustivel combustivel;
+    private Combustivel combustivel;
     private double qtnAtual;
 
             //ICombustivel tipo
-    public Tanque(int capacidade){
+    public Tanque(int capacidade, Combustivel tipo){
         this.capacidade = capacidade;
-        //combustivel = new tipo();
+        combustivel = tipo;
         
     }
 
@@ -30,21 +30,18 @@ public class Tanque {
     }
 
     /**
-     * Caso passe uma quantidade maior que o tanque aguente, o valor excedente é ignorado
-     * @param litros -> quantidade que vai abastecer
-     * @return o valor final no tanque
+     * Coloca o Tanque na quantidade máxima
+     * 
      */
-    public double abastecer(double litros){
-        
-        if(litros > this.capacidade){
-            this.qtnAtual = this.capacidade;
-            return this.qtnAtual;
-        }
-        else{
-            this.qtnAtual += litros;
-            return this.qtnAtual; 
-        }
+    public void abastecer(){
+        this.qtnAtual = this.capacidade;
+    }
 
-        
+    public void setCombustivel(Combustivel combustivel) {
+        this.combustivel = combustivel;
+    }
+
+    public Combustivel getCombustivel(){
+        return this.combustivel;
     }
 }

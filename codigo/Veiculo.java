@@ -3,8 +3,6 @@ package codigo;
 
 import java.util.ArrayList;
 
-import codigo.resources.Tanque;
-
 /**
  * Veiculo
  */
@@ -98,12 +96,9 @@ public abstract class Veiculo implements IConstants {
     
 
     /**
-     * Caso passe uma quantidade maior que o tanque aguente, o valor excedente é ignorado
-     * @param litros -> quantidade que vai abastecer
-     * @return o valor final no tanque
+     * Coloca o Tanque na quantidade máxima
+     * 
      */
-    public double abastecer(double litros){
-        return this.TANQUE.abastecer(litros);
-    }
+    public abstract void abastecer(Combustivel tipo);
     
 }

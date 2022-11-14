@@ -1,14 +1,12 @@
 package codigo;
 
-import codigo.resources.Tanque;
-
 public class Furgao extends Veiculo{
     
     //Construtor
 
     public Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE= new Tanque(TANQUE_FURGAO);
+        this.TANQUE= new Tanque(TANQUE_FURGAO,Combustivel.GASOLINA);
     }
 
     //Overrides
@@ -41,5 +39,13 @@ public class Furgao extends Veiculo{
         "\nPlaca: " + this.getPlaca() + "\n"+
         "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
         "Total de Gastos: " + this.calcularCustos() + "R$";
+    }
+
+    @Override
+    public void abastecer(Combustivel tipo) {
+        if(tipo == Combustivel.GASOLINA){
+            this.TANQUE.abastecer();
+        }
+        
     }
 }

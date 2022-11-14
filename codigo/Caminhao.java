@@ -1,14 +1,12 @@
 package codigo;
 
-import codigo.resources.Tanque;
-
 public class Caminhao extends Veiculo{
     
     //Construtor
 
     public Caminhao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque(TANQUE_CAMINHAO);
+        this.TANQUE = new Tanque(TANQUE_CAMINHAO,Combustivel.DIESEL);
     }
 
     // Override
@@ -44,5 +42,13 @@ public class Caminhao extends Veiculo{
         "\nPlaca: " + this.getPlaca() + "\n"+
         "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
         "Total de Gastos: " + this.calcularCustos() + "R$";
+    }
+
+    @Override
+    public void abastecer(Combustivel tipo) {
+        if(tipo == Combustivel.DIESEL){
+            this.TANQUE.abastecer();
+        }
+        
     }
 }
