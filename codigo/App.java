@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class App{
@@ -327,13 +329,13 @@ public class App{
     // Ainda a testar !
     public static double kmMediaTodasRotas(Frota frota){
         
-        int media =  frota.getVeiculos().stream()
-        .mapToDouble(Veiculo :: quilometragem)
-        .average()
-        .getAsDouble();
+        double media = frota.getVeiculos().stream()
+            .mapToDouble(Veiculo :: quilometragem)
+            .average()
+            .getAsDouble();
 
         return media;
-    } 
+    }
     /** STREAMS FIM */
 
 

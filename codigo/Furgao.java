@@ -6,19 +6,19 @@ public class Furgao extends Veiculo{
 
     public Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE= new Tanque(TANQUE_FURGAO,Combustivel.GASOLINA);
+        this.TANQUE= new Tanque((int)IConstantsVanFurgao.TANQUE_FURGAO.getValor(),Combustivel.GASOLINA);
     }
 
     //Overrides
 
     @Override
     public double calcularSeguro() {
-        return this.valorVenda * IPVA_SEGURO_VAN_FURGAO;
+        return this.valorVenda * IConstantsVanFurgao.IPVA_SEGURO_VAN_FURGAO.getValor();
     }
 
     @Override
     public double calcularIPVA() {
-        return this.valorVenda * IPVA_SEGURO_VAN_FURGAO;
+        return this.valorVenda * IConstantsVanFurgao.IPVA_SEGURO_VAN_FURGAO.getValor();
     }
 
     @Override
@@ -30,7 +30,9 @@ public class Furgao extends Veiculo{
             return 0;
         }
 
-        return (CUSTOALINHAMENTO_VAN_FURGAO + CUSTOVISTORIA_VAN_FURGAO ) * (km_rodados / KM_VISTORIA_VAN_FURGAO);
+        return (IConstantsVanFurgao.CUSTOALINHAMENTO_VAN_FURGAO.getValor() + 
+        IConstantsVanFurgao.CUSTOVISTORIA_VAN_FURGAO.getValor() ) * 
+        (km_rodados / IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor());
     }
     
     @Override

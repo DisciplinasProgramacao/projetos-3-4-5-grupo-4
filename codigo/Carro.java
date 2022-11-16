@@ -1,24 +1,25 @@
 package codigo;
 
-public class Carro extends Veiculo{
+public class Carro extends Veiculo {
 
     //Construtor
 
     public Carro(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque(TANQUE_CARRO,Combustivel.GASOLINA);
+        this.TANQUE = new Tanque((int)IConstantsCarro.TANQUE_CARRO.getValor(),Combustivel.GASOLINA);
     }
 
     // Overrides
 
     @Override
     public double calcularSeguro() {
-        return (this.valorVenda * SEGURO_CARRO) + VALORADICIONALSEGURO_CARRO;
+        return (this.valorVenda * IConstantsCarro.SEGURO_CARRO.getValor()) 
+        + IConstantsCarro.VALORADICIONALSEGURO_CARRO.getValor();
     }
 
     @Override
     public double calcularIPVA() {
-        return this.valorVenda * IPVA_CARRO;
+        return this.valorVenda * IConstantsCarro.IPVA_CARRO.getValor();
     }
 
     @Override
@@ -29,7 +30,8 @@ public class Carro extends Veiculo{
         if(km_rodados == 0){
             return 0;
         }else{
-            return CUSTOALINHAMENTO_CARRO * (km_rodados / KM_VISTORIA_CARRO);
+            return IConstantsCarro.CUSTOALINHAMENTO_CARRO.getValor() 
+            * (km_rodados / IConstantsCarro.KM_VISTORIA_CARRO.getValor());
         }
     
     }
