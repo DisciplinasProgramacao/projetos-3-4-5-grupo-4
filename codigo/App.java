@@ -9,7 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.Scanner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class App{
 
@@ -336,6 +341,40 @@ public class App{
 
         return media;
     }
+
+    public static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
+
+
+        frota.getVeiculos()
+                .stream()
+                .sorted(((v1, v2) -> {
+
+                    double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
+                    double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
+                    
+                    if(maior_rota_v1 > maior_rota_v2){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                }))
+                .collect(Collectors.toList());
+
+
+        return frota.getVeiculos().subList(0, limit);
+    }
+
+    private static double retornaMaiorRotaVeiculo(Veiculo veiculo){
+
+        return veiculo.getRotas()
+                        .stream()
+                        .mapToDouble(Rota::getKmTotal)
+                        .max()
+                        .getAsDouble();
+
+
+    }
+
     /** STREAMS FIM */
 
 
