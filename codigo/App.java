@@ -322,5 +322,19 @@ public class App{
 
     }
 
+    /** STREAMS INÍCIO */
+
+    // Ainda a testar !
+    public static double kmMediaTodasRotas(Frota frota){
+        
+        int media =  frota.getVeiculos().stream()
+        .mapToDouble(Veiculo :: quilometragem)
+        .average()
+        .getAsDouble();
+
+        return media;
+    } 
+    /** STREAMS FIM */
+
 
 }
