@@ -7,17 +7,14 @@ import java.util.LinkedList;
 /**
  * Veiculo
  */
-public abstract class Veiculo implements IConstants {
-
-    
-    
+public abstract class Veiculo{
     
     // Atributos
 
     protected String placa;
     protected double valorVenda;
     protected Tanque TANQUE;
-    protected  double kmMedio;
+    protected double kmMedio;
     protected ArrayList<Rota> rotas;
     protected LinkedList<Gasto> custosAdicionais;
 
@@ -110,13 +107,13 @@ public abstract class Veiculo implements IConstants {
         return kmMedio;
     }
 
-   
-    
     public void setValorVenda(double valorVenda) {
         this.valorVenda = valorVenda;
     }
 
-    
+    public ArrayList<Rota>  getRotas(){
+        return this.rotas;
+    }
 
     
     
