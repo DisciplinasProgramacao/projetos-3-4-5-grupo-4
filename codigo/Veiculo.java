@@ -76,11 +76,13 @@ public abstract class Veiculo{
     }
 
     private boolean validarRota(Rota rota){
-        
         if(rota.getKmTotal() < this.TANQUE.distanciaPossivel())
             return true;
-        else
-            return false;
+        else if(rota.getKmTotal() < this.TANQUE.distanciaMaximaPossivel()) {
+            this.TANQUE.abastecer(this.TANQUE.getCombustivel());
+            return true;
+        }
+        return false;
     }
 
     public boolean addRota(Rota rota){
