@@ -45,10 +45,11 @@ public class Caminhao extends Veiculo{
     }
 
     @Override
-    public void abastecer(Combustivel tipo) {
-        if(tipo == Combustivel.DIESEL){
-            this.TANQUE.abastecer();
-        }
+    public void abastecer(Combustivel tipo)throws ExceptionCombustivel {
+        if(tipo == Combustivel.DIESEL)
+            this.custosAdicionais.add(new Gasto("abastecimento", this.TANQUE.abastecer(tipo)));
+        else
+            throw new ExceptionCombustivel();
         
     }
 }

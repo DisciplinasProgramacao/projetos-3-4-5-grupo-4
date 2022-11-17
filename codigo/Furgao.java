@@ -42,10 +42,10 @@ public class Furgao extends Veiculo{
     }
 
     @Override
-    public void abastecer(Combustivel tipo) {
-        if(tipo == Combustivel.GASOLINA){
-            this.TANQUE.abastecer();
-        }
-        
+    public void abastecer(Combustivel tipo) throws ExceptionCombustivel{
+        if(tipo == Combustivel.GASOLINA)
+            this.custosAdicionais.add(new Gasto("abastecimento", this.TANQUE.abastecer(tipo)));
+        else
+            throw new ExceptionCombustivel();  
     }
 }

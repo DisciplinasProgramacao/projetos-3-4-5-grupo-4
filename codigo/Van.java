@@ -43,14 +43,11 @@ public class Van extends Veiculo{
     }
 
     @Override
-    public void abastecer(Combustivel tipo) {
-        if(tipo.equals(Combustivel.DIESEL)){
-            this.TANQUE.setCombustivel(tipo);
-            this.TANQUE.abastecer();
-        }else if(tipo.equals(Combustivel.GASOLINA)){
-            this.TANQUE.setCombustivel(tipo);
-            this.TANQUE.abastecer();
-        }
+    public void abastecer(Combustivel tipo) throws ExceptionCombustivel{
+        if(tipo == Combustivel.GASOLINA || tipo == Combustivel.DIESEL )
+            this.custosAdicionais.add(new Gasto("abastecimento", this.TANQUE.abastecer(tipo)));
+        else
+            throw new ExceptionCombustivel();
         
     }
 }

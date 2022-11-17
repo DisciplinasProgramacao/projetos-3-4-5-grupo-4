@@ -2,6 +2,7 @@ package codigo;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Veiculo
@@ -18,6 +19,7 @@ public abstract class Veiculo implements IConstants {
     protected Tanque TANQUE;
     protected  double kmMedio;
     protected ArrayList<Rota> rotas;
+    protected LinkedList<Gasto> custosAdicionais;
 
     //Métodos abstratos
 
@@ -26,6 +28,13 @@ public abstract class Veiculo implements IConstants {
     public abstract double calcularIPVA();
 
     public abstract double calcularCustos();
+
+    /**
+     * 
+     * @param tipo tipo do combustível
+     * @throws Exception se o tipo do combustivel nâo for adequado ao tipo veículo
+     */
+    public abstract void abastecer(Combustivel tipo) throws ExceptionCombustivel;
 
     /**
      * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas e o total de gastos
@@ -40,19 +49,33 @@ public abstract class Veiculo implements IConstants {
         this.valorVenda = valorVenda;
         this.kmMedio = kmMedio;
         this.rotas = new ArrayList<>();
+        this.custosAdicionais = new LinkedList<>();
     }
 
     //Métodos
 
     public double quilometragem(){
-        
-        double km=0;
 
-        for(int i = 0 ; i < this.rotas.size() ; i++){
-            km += this.rotas.get(i).getKmTotal();
-        }
+        return this.rotas.stream()
+        .mapToDouble(Rota :: getKmTotal)
+        .sum();
         
-        return km;
+        // double km=0;
+
+        // for(int i = 0 ; i < this.rotas.size() ; i++){
+        //     km += this.rotas.get(i).getKmTotal();
+        // }
+        
+        // return km;
+    }
+
+    /**
+     * @return Soma dos custos adicionais
+     */
+    public double totalCustosAdicionais(){
+        return this.custosAdicionais.stream()
+        .mapToDouble(Gasto :: getValor)
+        .sum();
     }
 
     private boolean validarRota(Rota rota){
@@ -95,10 +118,6 @@ public abstract class Veiculo implements IConstants {
 
     
 
-    /**
-     * Coloca o Tanque na quantidade máxima
-     * 
-     */
-    public abstract void abastecer(Combustivel tipo);
+    
     
 }

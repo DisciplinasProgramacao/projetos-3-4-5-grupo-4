@@ -6,42 +6,47 @@ public class Tanque {
     private Combustivel combustivel;
     private double qtnAtual;
 
-            //ICombustivel tipo
-    public Tanque(int capacidade, Combustivel tipo){
+    // ICombustivel tipo
+    public Tanque(int capacidade, Combustivel tipo) {
         this.capacidade = capacidade;
         combustivel = tipo;
-        
+
     }
 
     /**
-     * Calcula a distância  pode pecorrer com o valor do tanque atual sem abastecer
+     * Calcula a distância pode pecorrer com o valor do tanque atual sem abastecer
+     * 
      * @return Double
      */
-    public double distanciaPossivel(){
+    public double distanciaPossivel() {
         return this.combustivel.getConsumo() * this.qtnAtual;
     }
 
     /**
-     * Calcula a distância máxima  pode pecorrer com o tanque cheio
+     * Calcula a distância máxima pode pecorrer com o tanque cheio
+     * 
      * @return Double
      */
-    public double distanciaMaximaPossivel(){
+    public double distanciaMaximaPossivel() {
         return this.combustivel.getConsumo() * this.capacidade;
     }
 
     /**
-     * Coloca o Tanque na quantidade máxima
-     * 
+     * Coloca o tanque no máximo possível
+     * @param tipo tipo do combustível
+     * @return retorna o custo em double do abastecimento
      */
-    public void abastecer(){
+    public double abastecer(Combustivel tipo) {
+        double custo  = (this.capacidade - this.qtnAtual) * tipo.getPreco();
         this.qtnAtual = this.capacidade;
+        return custo;
     }
 
-    public void setCombustivel(Combustivel combustivel) {
-        this.combustivel = combustivel;
+    public void setCombustivel(Combustivel tipo) {
+        this.combustivel = tipo;
     }
 
-    public Combustivel getCombustivel(){
+    public Combustivel getCombustivel() {
         return this.combustivel;
     }
 }
