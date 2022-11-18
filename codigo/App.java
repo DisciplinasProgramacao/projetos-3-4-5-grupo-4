@@ -1,19 +1,8 @@
 package codigo;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.Scanner;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class App{
@@ -373,6 +362,14 @@ public class App{
                         .getAsDouble();
 
 
+    }
+
+    private static List<Veiculo> custosDecrescentes(Frota frota){
+
+        return frota.getVeiculos()
+                .stream()
+                .sorted((v1,v2) -> ((v1.calcularCustos()+v1.totalCustosAdicionais())<(v2.calcularCustos()+v2.totalCustosAdicionais()))?1:-1)
+                .collect(Collectors.toList());
     }
 
     /** STREAMS FIM */
