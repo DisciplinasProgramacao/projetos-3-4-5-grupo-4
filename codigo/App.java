@@ -60,7 +60,6 @@ public class App{
                 System.out.println("Veículo existe");
             }    
         }
-
     }  
 
     /**
@@ -140,6 +139,9 @@ public class App{
         System.out.println("4 - Incluir rotas para veículo");
         System.out.println("5 - Localizar veículo da frota");
         System.out.println("6 - Imprimir relatório do veículo");
+        System.out.println("7 - Imprimir 3 veículos com as maiores rotas");
+        System.out.println("8 - Km média de todas rotas da frota");
+        System.out.println("9 - Lista de veículos ordenada decrescentemente por custos gerados");
 
     }
 
@@ -170,7 +172,16 @@ public class App{
                 return true;
             case "6":
                 localizaVeiculoFrota(true);
-                return true;        
+                return true;
+            case "7":
+                imprimiVeiculosComAs3MaioresRotas();
+                return true;
+            case "8":
+                imprimiKmMedia();
+                return true;
+            case "9":
+                imprimiListaOrdenadaDecrescente();
+                return true;                        
             default:
                 System.out.println("Escolha inválida");
                 return true;
@@ -318,9 +329,28 @@ public class App{
 
     }
 
+    private static void imprimiVeiculosComAs3MaioresRotas(){
+
+        veiculosMaioresRotas(frota, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+
+    }
+
+    private static void imprimiKmMedia(){
+
+        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(frota));
+
+    }
+
+    private static void imprimiListaOrdenadaDecrescente(){
+
+        custosDecrescentes(frota).forEach(v -> System.out.println(v.gerarRelatorio()));
+
+    }
+
     /** STREAMS INÍCIO */
 
     // Ainda a testar !
+    
     public static double kmMediaTodasRotas(Frota frota){
         
         double media = frota.getVeiculos().stream()
@@ -331,26 +361,35 @@ public class App{
         return media;
     }
 
+    /**
+     * @param frota -> recebe a frota de veículos a ser localizada
+     * @param limit -> limite de quantos veículos devem ser retornados 
+     * @return -> lista de veículos ordenadas
+     */
     public static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
+        
+        if(frota.getVeiculos().size() >= limit){
 
+            return frota.getVeiculos()
+                    .stream()
+                    .sorted(((v1, v2) ->{
+                        double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
+                        double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
+                        
+                        if(maior_rota_v1 > maior_rota_v2){
+                            return 1;
+                        }else{
+                            return -1;
+                        }
+                    }))
+                    .limit(limit)
+                    .collect(Collectors.toList());
 
-        frota.getVeiculos()
-                .stream()
-                .sorted(((v1, v2) -> {
+        }else{
+            throw new RuntimeException("A frota não possui veiculos suficientes para consulta");
+        }
 
-                    double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
-                    double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
-                    
-                    if(maior_rota_v1 > maior_rota_v2){
-                        return 1;
-                    }else{
-                        return -1;
-                    }
-                }))
-                .collect(Collectors.toList());
-
-
-        return frota.getVeiculos().subList(0, limit);
+        
     }
 
     private static double retornaMaiorRotaVeiculo(Veiculo veiculo){
