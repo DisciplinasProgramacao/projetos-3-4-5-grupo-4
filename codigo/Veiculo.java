@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import codigo.Enums.Combustivel;
+
 /**
  * Veiculo
  */
@@ -30,12 +32,12 @@ public abstract class Veiculo implements Serializable{
     /**
      * 
      * @param tipo tipo do combustível
-     * @throws Exception se o tipo do combustivel nâo for adequado ao tipo veículo
+     * @throws ExceptionCombustivel se o tipo do combustivel nâo for adequado ao tipo veículo
      */
     public abstract void abastecer(Combustivel tipo) throws ExceptionCombustivel;
 
     /**
-     * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas e o total de gastos
+     * Relatório do veículo contendo: O tipo, a placa, número de rotas relaizadas , o total e os detalhes dos gastos
      * @return String
      */
     public abstract String gerarRelatorio();
@@ -52,19 +54,12 @@ public abstract class Veiculo implements Serializable{
 
     //Métodos
 
+    
     public double quilometragem(){
 
         return this.rotas.stream()
         .mapToDouble(Rota :: getKmTotal)
         .sum();
-        
-        // double km=0;
-
-        // for(int i = 0 ; i < this.rotas.size() ; i++){
-        //     km += this.rotas.get(i).getKmTotal();
-        // }
-        
-        // return km;
     }
 
     /**
@@ -98,24 +93,18 @@ public abstract class Veiculo implements Serializable{
         return this.placa;
     }
 
-    public void setPlaca(String placa){
-        this.placa = placa;
-    }
 
     public double getValorVenda() {
         return valorVenda;
     }
 
-    public double getKmMedio() {
-        return kmMedio;
+    public double getKmMedio(){
+        return this.kmMedio;
     }
-
-    public void setValorVenda(double valorVenda) {
-        this.valorVenda = valorVenda;
-    }
+    
 
     public ArrayList<Rota>  getRotas(){
-        return this.rotas;
+        return new ArrayList<Rota>(this.rotas);
     }
 
     

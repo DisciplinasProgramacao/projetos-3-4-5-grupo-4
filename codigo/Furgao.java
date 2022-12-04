@@ -1,24 +1,27 @@
 package codigo;
 
+import codigo.Enums.Combustivel;
+import codigo.Enums.FurgaoEnum;
+
 public class Furgao extends Veiculo{
     
     //Construtor
 
     public Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE= new Tanque((int)IConstantsVanFurgao.TANQUE_FURGAO.getValor(),Combustivel.GASOLINA);
+        this.TANQUE= new Tanque((int)FurgaoEnum.TANQUE.getValor(),Combustivel.GASOLINA);
     }
 
     //Overrides
 
     @Override
     public double calcularSeguro() {
-        return this.valorVenda * IConstantsVanFurgao.IPVA_SEGURO_VAN_FURGAO.getValor();
+        return this.valorVenda * FurgaoEnum.SEGURO.getValor();
     }
 
     @Override
     public double calcularIPVA() {
-        return this.valorVenda * IConstantsVanFurgao.IPVA_SEGURO_VAN_FURGAO.getValor();
+        return this.valorVenda * FurgaoEnum.IPVA.getValor();
     }
 
     @Override
@@ -27,7 +30,7 @@ public class Furgao extends Veiculo{
         if(this.quilometragem() == 0)
             return 0;
         else
-            return this.custoAlinhamento() + this.custoVistoria() + this.custosAdicionais();
+            return this.custoAlinhamento() + this.custoVistoria() + this.totalCustosAdicionais();
     }
     
     @Override
@@ -59,25 +62,19 @@ public class Furgao extends Veiculo{
 
     private double custoAlinhamento(){
         double km_rodados = this.quilometragem();
-        double alinhamento = km_rodados / IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor();
+        double alinhamento = km_rodados / FurgaoEnum.KM_VISTORIA.getValor();
 
 
-        return  IConstantsVanFurgao.CUSTOALINHAMENTO_VAN_FURGAO.getValor()   * alinhamento;
+        return  FurgaoEnum.CUSTOALINHAMENTO.getValor()   * alinhamento;
     }
 
     private double custoVistoria(){
         double km_rodados = this.quilometragem();
-        double vistoria = km_rodados /IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor();
+        double vistoria = km_rodados /FurgaoEnum.KM_VISTORIA.getValor();
 
 
-        return IConstantsVanFurgao.CUSTOVISTORIA_VAN_FURGAO.getValor() * vistoria;
+        return FurgaoEnum.CUSTOVISTORIA.getValor() * vistoria;
     }
 
-    private double custosAdicionais(){
-        
-        return this.custosAdicionais.stream()
-        .mapToDouble(Gasto :: getValor)
-        .sum();
-        
-    }
+    
 }

@@ -1,5 +1,7 @@
 package codigo;
 
+import codigo.Enums.CaminhaoEnum;
+import codigo.Enums.Combustivel;
 
 public class Caminhao extends Veiculo{
     
@@ -7,20 +9,20 @@ public class Caminhao extends Veiculo{
 
     public Caminhao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque((int)IConstantsCaminhao.TANQUE_CAMINHAO.getValor(),Combustivel.DIESEL);
+        this.TANQUE = new Tanque((int)CaminhaoEnum.TANQUE.getValor(),Combustivel.DIESEL);
     }
 
     // Override
 
     @Override
     public double calcularSeguro() {
-        return (this.valorVenda * IConstantsCaminhao.SEGURO_CAMINHAO.getValor()) + 
-        IConstantsCaminhao.VALORADICIONALSEGURO_CAMINHAO.getValor();
+        return (this.valorVenda * CaminhaoEnum.SEGURO.getValor()) + 
+        CaminhaoEnum.VALORADICIONALSEGURO.getValor();
     }
 
     @Override
     public double calcularIPVA() {
-        return  this.valorVenda * IConstantsCaminhao.IPVA_CAMINHAO.getValor();
+        return  this.valorVenda * CaminhaoEnum.IPVA.getValor();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class Caminhao extends Veiculo{
         if(this.quilometragem() == 0)
             return 0;
         else
-            return this.custoManutencao() + this.custoVistoria() + this.custosAdicionais();
+            return this.custoManutencao() + this.custoVistoria() + this.totalCustosAdicionais();
     }
     
     @Override
@@ -61,25 +63,18 @@ public class Caminhao extends Veiculo{
 
     private double custoManutencao(){
         double km_rodados = this.quilometragem();
-        double manutencao = km_rodados / IConstantsCaminhao.KM_MANUTENCAO_CAMINHAO.getValor();
+        double manutencao = km_rodados / CaminhaoEnum.KM_MANUTENCAO.getValor();
 
 
-        return  IConstantsCaminhao.CUSTOMANUTENCAO_CAMINHAO.getValor() * manutencao;
+        return  CaminhaoEnum.CUSTOMANUTENCAO.getValor() * manutencao;
     }
 
     private double custoVistoria(){
         double km_rodados = this.quilometragem();
-         double vistoria = km_rodados /IConstantsCaminhao.KM_VISTORIA_CAMINHAO.getValor();
+         double vistoria = km_rodados /CaminhaoEnum.KM_VISTORIA.getValor();
 
 
-        return IConstantsCaminhao.CUSTOVISTORIA_CAMINHAO.getValor() * vistoria;
+        return CaminhaoEnum.CUSTOVISTORIA.getValor() * vistoria;
     }
 
-    private double custosAdicionais(){
-        
-        return this.custosAdicionais.stream()
-        .mapToDouble(Gasto :: getValor)
-        .sum();
-        
-    }
 }

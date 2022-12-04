@@ -1,4 +1,4 @@
-package codigo;
+package codigo.Enums;
 
 public enum Combustivel {
 

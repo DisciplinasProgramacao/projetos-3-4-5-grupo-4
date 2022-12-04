@@ -1,5 +1,7 @@
 package codigo;
 
+import codigo.Enums.Combustivel;
+
 public class Tanque {
 
     private int capacidade;

@@ -1,25 +1,28 @@
 package codigo;
 
+import codigo.Enums.CarroEnum;
+import codigo.Enums.Combustivel;
+
 public class Carro extends Veiculo {
 
     //Construtor
 
     public Carro(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque((int)IConstantsCarro.TANQUE_CARRO.getValor(),Combustivel.GASOLINA);
+        this.TANQUE = new Tanque((int)CarroEnum.TANQUE.getValor(),Combustivel.GASOLINA);
     }
 
     // Overrides
 
     @Override
     public double calcularSeguro() {
-        return (this.valorVenda * IConstantsCarro.SEGURO_CARRO.getValor()) 
-        + IConstantsCarro.VALORADICIONALSEGURO_CARRO.getValor();
+        return (this.valorVenda * CarroEnum.SEGURO.getValor()) 
+        + CarroEnum.VALORADICIONALSEGURO.getValor();
     }
 
     @Override
     public double calcularIPVA() {
-        return this.valorVenda * IConstantsCarro.IPVA_CARRO.getValor();
+        return this.valorVenda * CarroEnum.IPVA.getValor();
     }
 
     @Override
@@ -28,7 +31,7 @@ public class Carro extends Veiculo {
         if(this.quilometragem() == 0)
             return 0;
         else
-            return this.custoAlinhamento() + this.custosAdicionais();
+            return this.custoAlinhamento() + this.totalCustosAdicionais();
     
     }
     
@@ -61,17 +64,11 @@ public class Carro extends Veiculo {
 
     private double custoAlinhamento(){
         double km_rodados = this.quilometragem();
-        double alinhamento = km_rodados / IConstantsCarro.KM_VISTORIA_CARRO.getValor();
+        double alinhamento = km_rodados / CarroEnum.KM_VISTORIA.getValor();
 
 
-        return  IConstantsCarro.CUSTOALINHAMENTO_CARRO.getValor()   * alinhamento;
+        return  CarroEnum.CUSTOALINHAMENTO.getValor()   * alinhamento;
     }
 
-    private double custosAdicionais(){
-        
-        return this.custosAdicionais.stream()
-        .mapToDouble(Gasto :: getValor)
-        .sum();
-        
-    }
+    
 }
