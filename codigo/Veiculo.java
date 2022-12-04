@@ -1,16 +1,17 @@
 package codigo;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
  * Veiculo
  */
-public abstract class Veiculo{
+public abstract class Veiculo implements Serializable{
     
     // Atributos
-
+    private static final long serialVersionUID = 1L;
     protected String placa;
     protected double valorVenda;
     protected Tanque TANQUE;
@@ -76,9 +77,9 @@ public abstract class Veiculo{
     }
 
     private boolean validarRota(Rota rota){
-        if(rota.getKmTotal() < this.TANQUE.distanciaPossivel())
+        if(rota.getKmTotal() <= this.TANQUE.distanciaPossivel())
             return true;
-        else if(rota.getKmTotal() < this.TANQUE.distanciaMaximaPossivel()) {
+        else if(rota.getKmTotal() <= this.TANQUE.distanciaMaximaPossivel()) {
             this.TANQUE.abastecer(this.TANQUE.getCombustivel());
             return true;
         }
