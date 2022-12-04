@@ -24,24 +24,30 @@ public class Van extends Veiculo{
     @Override
     public double calcularCustos() {
         
-        double km_rodados = this.quilometragem();
-
-        if(km_rodados == 0){
+        if(this.quilometragem() == 0)
             return 0;
-        }
-
-        return (IConstantsVanFurgao.CUSTOALINHAMENTO_VAN_FURGAO.getValor()
-         + IConstantsVanFurgao.CUSTOVISTORIA_VAN_FURGAO.getValor()) * 
-         (km_rodados / IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor());
+        else
+            return this.custoAlinhamento() + this.custoVistoria() + this.custosAdicionais();
     }
     
     
     @Override
     public String gerarRelatorio() {
-        return "Van :" +
-        "\nPlaca: " + this.getPlaca() + "\n"+
-        "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
-        "Total de Gastos: " + this.calcularCustos() + "R$";
+        StringBuilder relatorio = new StringBuilder("Veículo : "+"Van"+"\n");
+        relatorio.append("\nPlaca: " + this.getPlaca() + "\n");
+        relatorio.append("Número de Rotas realizadas: " + this.rotas.size() + "\n" );
+        relatorio.append("Total de Gastos: " + "R$" + String.format("%02d", this.calcularCustos()) +
+         "\n"+ "\n");
+        relatorio.append("Detalhes dos gastos: "  + "\n"+ "\n");
+        relatorio.append("Alinhamento: " + this.custoAlinhamento());
+        relatorio.append("Vistoria: " + this.custoVistoria());
+        
+
+        for (Gasto gasto : this.custosAdicionais) {
+            relatorio.append(gasto.getTipo()+ ": " + gasto.getValor());
+        }
+
+        return relatorio.toString();
     }
 
     @Override
@@ -50,6 +56,30 @@ public class Van extends Veiculo{
             this.custosAdicionais.add(new Gasto("abastecimento", this.TANQUE.abastecer(tipo)));
         else
             throw new ExceptionCombustivel();
+        
+    }
+
+    private double custoAlinhamento(){
+        double km_rodados = this.quilometragem();
+        double alinhamento = km_rodados / IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor();
+
+
+        return  IConstantsVanFurgao.CUSTOALINHAMENTO_VAN_FURGAO.getValor()   * alinhamento;
+    }
+
+    private double custoVistoria(){
+        double km_rodados = this.quilometragem();
+        double vistoria = km_rodados /IConstantsVanFurgao.KM_VISTORIA_VAN_FURGAO.getValor();
+
+
+        return IConstantsVanFurgao.CUSTOVISTORIA_VAN_FURGAO.getValor() * vistoria;
+    }
+
+    private double custosAdicionais(){
+        
+        return this.custosAdicionais.stream()
+        .mapToDouble(Gasto :: getValor)
+        .sum();
         
     }
 }

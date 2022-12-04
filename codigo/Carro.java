@@ -25,23 +25,29 @@ public class Carro extends Veiculo {
     @Override
     public double calcularCustos() {
         
-        double km_rodados = this.quilometragem();
-
-        if(km_rodados == 0){
+        if(this.quilometragem() == 0)
             return 0;
-        }else{
-            return IConstantsCarro.CUSTOALINHAMENTO_CARRO.getValor() 
-            * (km_rodados / IConstantsCarro.KM_VISTORIA_CARRO.getValor());
-        }
+        else
+            return this.custoAlinhamento() + this.custosAdicionais();
     
     }
     
     @Override
     public String gerarRelatorio() {
-        return "Carro :" +
-        "\nPlaca: " + this.getPlaca() + "\n"+
-        "Número de Rotas realizadas: " + this.rotas.size() + "\n" +
-        "Total de Gastos: " + this.calcularCustos() + "R$";
+        StringBuilder relatorio = new StringBuilder("Veículo : "+"Carro"+"\n");
+        relatorio.append("\nPlaca: " + this.getPlaca() + "\n");
+        relatorio.append("Número de Rotas realizadas: " + this.rotas.size() + "\n" );
+        relatorio.append("Total de Gastos: " + "R$" + String.format("%02d", this.calcularCustos()) +
+         "\n"+ "\n");
+        relatorio.append("Detalhes dos gastos: "  + "\n"+ "\n");
+        relatorio.append("Alinhamento: " + this.custoAlinhamento());
+        
+
+        for (Gasto gasto : this.custosAdicionais) {
+            relatorio.append(gasto.getTipo()+ ": " + gasto.getValor());
+        }
+
+        return relatorio.toString();
     }
 
     
@@ -51,5 +57,21 @@ public class Carro extends Veiculo {
             this.custosAdicionais.add(new Gasto("abastecimento", this.TANQUE.abastecer(tipo)));
         else
             throw new ExceptionCombustivel();
+    }
+
+    private double custoAlinhamento(){
+        double km_rodados = this.quilometragem();
+        double alinhamento = km_rodados / IConstantsCarro.KM_VISTORIA_CARRO.getValor();
+
+
+        return  IConstantsCarro.CUSTOALINHAMENTO_CARRO.getValor()   * alinhamento;
+    }
+
+    private double custosAdicionais(){
+        
+        return this.custosAdicionais.stream()
+        .mapToDouble(Gasto :: getValor)
+        .sum();
+        
     }
 }
