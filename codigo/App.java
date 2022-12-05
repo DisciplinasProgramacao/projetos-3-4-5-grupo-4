@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ public class App{
     private static final String SALVAR_VEICULOS = "resources/veiculosSalvos.txt";
     private static final String ESCOLHAS_USUARIO = "config/escolhaUsuario.txt";
 
+    private static final App app = new App();
     private static Frota frota = new Frota();  
     private static Scanner teclado = new Scanner(System.in);
 
@@ -29,7 +31,7 @@ public class App{
     public static void interfaceUsuario(){
         
         String escolha;
-        boolean continuar = true;
+        boolean continuar;
 
         do{
 
@@ -346,8 +348,11 @@ public class App{
 
     public static void imprimiVeiculosComAs3MaioresRotas(){
 
-        veiculosMaioresRotas(frota, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+        List<Veiculo> veiculos = veiculosMaioresRotas(frota, 3);
 
+        for (Veiculo veiculo : veiculos) {
+            System.out.println(veiculo.gerarRelatorio());
+        }
     }
 
     public static void imprimiKmMedia(){
@@ -385,12 +390,12 @@ public class App{
         
         if(frota.getVeiculos().size() >= limit){
 
-            return frota.getVeiculos()
+            List<Veiculo> veiculos = frota.getVeiculos()
                     .stream()
                     .sorted(((v1, v2) ->{
                         double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
                         double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
-                        
+
                         if(maior_rota_v1 > maior_rota_v2){
                             return 1;
                         }else{
@@ -399,6 +404,8 @@ public class App{
                     }))
                     .limit(limit)
                     .collect(Collectors.toList());
+
+            return veiculos;
 
         }else{
             throw new RuntimeException("A frota não possui veiculos suficientes para consulta");
@@ -409,11 +416,20 @@ public class App{
 
     public static double retornaMaiorRotaVeiculo(Veiculo veiculo){
 
-        return veiculo.getRotas()
-                        .stream()
-                        .mapToDouble(Rota::getKmTotal)
-                        .max()
-                        .getAsDouble();
+        OptionalDouble maior_rota =  veiculo.getRotas()
+                .stream()
+                .mapToDouble(Rota::getKmTotal)
+                .max()
+                ;
+
+        if(maior_rota.isPresent()){
+            return maior_rota.getAsDouble();
+        }else{
+            return 0;
+        }
+
+
+
 
 
     }
@@ -431,8 +447,6 @@ public class App{
     // reflexão
 
     private static boolean trataOpcoesReflexao(String opcao){
-
-        App app = new App();
 
         String classe = "codigo.App";
 
