@@ -1,0 +1,10 @@
+Sair
+Carregar conjunto de veiculos
+Salvar conjunto de arquivos
+Incluir novo veiculo
+Incluir rotas para veiculo
+Localizar veiculo da frota
+Imprimir relatorio do veiculo
+Imprimir 3 veiculos com as maiores rotas
+Km media de todas rotas da frota
+Lista de veiculos ordenada decrescentemente por custos gerados

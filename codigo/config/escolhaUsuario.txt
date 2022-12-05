@@ -1,0 +1,10 @@
+0;null;false
+1;carregaArquivo;true
+2;salvarArquivo;true
+3;criaVeiculo;true
+4;incluirRota;true
+5;localizaVeiculoFrota;true
+6;gerarRelatorio;true
+7;imprimiVeiculosComAs3MaioresRotas;true
+8;imprimiKmMedia;true
+9;imprimiListaOrdenadaDecrescente;true
