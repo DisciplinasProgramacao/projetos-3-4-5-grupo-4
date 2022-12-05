@@ -1,7 +1,7 @@
-package codigo;
+package codigo.Exceptions;
 
 public class ExceptionCombustivel extends  IllegalArgumentException{
-    ExceptionCombustivel(){
+    public ExceptionCombustivel(){
         super("Tipo do combustível inadequado.");
     }
 }
