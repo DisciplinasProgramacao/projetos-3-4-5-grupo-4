@@ -2,6 +2,7 @@ package codigo;
 
 import codigo.Enums.CarroEnum;
 import codigo.Enums.Combustivel;
+import codigo.Exceptions.ExceptionCombustivel;
 
 public class Carro extends Veiculo {
 
@@ -37,17 +38,19 @@ public class Carro extends Veiculo {
     
     @Override
     public String gerarRelatorio() {
-        StringBuilder relatorio = new StringBuilder("Veículo : "+"Carro"+"\n");
+        StringBuilder relatorio = new StringBuilder("\nVeículo : "+"Carro"+"\n");
         relatorio.append("\nPlaca: " + this.getPlaca() + "\n");
+        relatorio.append("Placa: " + this.getPlaca() + "\n");
+        relatorio.append("Seguro: " + this.calcularSeguro() + "\n");
         relatorio.append("Número de Rotas realizadas: " + this.rotas.size() + "\n" );
-        relatorio.append("Total de Gastos: " + "R$" + String.format("%02d", this.calcularCustos()) +
+        relatorio.append("Total de Gastos: " + "R$" + this.calcularCustos() +
          "\n"+ "\n");
         relatorio.append("Detalhes dos gastos: "  + "\n"+ "\n");
-        relatorio.append("Alinhamento: " + this.custoAlinhamento());
+        relatorio.append("Alinhamento: " + this.custoAlinhamento()+ "\n");
         
 
         for (Gasto gasto : this.custosAdicionais) {
-            relatorio.append(gasto.getTipo()+ ": " + gasto.getValor());
+            relatorio.append(gasto.getTipo()+ ": " + gasto.getValor()+ "\n");
         }
 
         return relatorio.toString();

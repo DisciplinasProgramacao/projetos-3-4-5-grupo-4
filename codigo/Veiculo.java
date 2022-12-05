@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import codigo.Enums.Combustivel;
+import codigo.Exceptions.ExceptionCombustivel;
+import codigo.Exceptions.ExceptionRouteTooBig;
 
 /**
  * Veiculo
@@ -71,21 +73,31 @@ public abstract class Veiculo implements Serializable{
         .sum();
     }
 
-    private boolean validarRota(Rota rota){
+    private boolean validarRota(Rota rota) {
         if(rota.getKmTotal() <= this.TANQUE.distanciaPossivel())
             return true;
         else if(rota.getKmTotal() <= this.TANQUE.distanciaMaximaPossivel()) {
-            this.TANQUE.abastecer(this.TANQUE.getCombustivel());
+            try {
+                this.abastecer(this.TANQUE.getCombustivel());
+            } catch (ExceptionCombustivel e) {
+                System.out.println(e.getMessage());
+            }
             return true;
         }
         return false;
     }
 
-    public boolean addRota(Rota rota){
+    /**
+     * 
+     * @param rota
+     * @return caso a rota tenha sido adicionada corretamente
+     * @throws ExceptionRouteTooBig 
+     */
+    public boolean addRota(Rota rota) throws ExceptionRouteTooBig{
         if(this.validarRota(rota))
             return this.rotas.add(rota);
         else
-            return false;
+        throw new ExceptionRouteTooBig();
         
     }
 

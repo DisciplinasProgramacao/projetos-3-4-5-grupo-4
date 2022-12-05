@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import codigo.Exceptions.ExceptionRouteTooBig;
+
 public class App{
 
     private static Frota frota = new Frota();  
@@ -123,7 +125,12 @@ public class App{
      */
     private static void criaRota(String data, String km_total, Veiculo veiculo){
 
-        veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
+        try {
+            veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
+            System.out.println("Rota salva com sucesso!");
+        } catch (ExceptionRouteTooBig e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -174,7 +181,7 @@ public class App{
                 localizaVeiculoFrota(true);
                 return true;
             case "7":
-                imprimiVeiculosComAs3MaioresRotas();
+                    imprimiVeiculosComAs3MaioresRotas();
                 return true;
             case "8":
                 imprimiKmMedia();
@@ -223,9 +230,15 @@ public class App{
             fileReader.close();
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("ERROR: " + e);
+            // throw new RuntimeException("ERROR: " + e);
+            System.out.println(" \nNão foi possivel localizar o arquivo pelo Caminho: ");
+            System.out.println(path);
+            System.out.println("\nFavor alterar o caminho do arquivo ou criar um no local indicado\n");
         } catch (IOException e) {
-            throw new RuntimeException("ERROR: " + e);
+            // throw new RuntimeException("ERROR: " + e);
+            System.out.println(" \nNão foi possivel ler o arquivo devido: ");
+            System.out.println("\n"+e.getMessage()+"\n");
+            
         }
     }
 
@@ -267,7 +280,9 @@ public class App{
         
         } catch (IOException e) {
             
-            throw new RuntimeException("ERROR: " + e);
+            // throw new RuntimeException("ERROR: " + e);
+            System.out.println(" \nNão foi possivel ler o arquivo devido: ");
+            System.out.println("\n"+e.getMessage()+"\n");
         }
     }
 
@@ -331,7 +346,13 @@ public class App{
 
     private static void imprimiVeiculosComAs3MaioresRotas(){
 
-        veiculosMaioresRotas(frota, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+        try {
+            veiculosMaioresRotas(frota, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        
 
     }
 
@@ -348,8 +369,6 @@ public class App{
     }
 
     /** STREAMS INÍCIO */
-
-    // Ainda a testar !
     
     public static double kmMediaTodasRotas(Frota frota){
         
@@ -365,6 +384,7 @@ public class App{
      * @param frota -> recebe a frota de veículos a ser localizada
      * @param limit -> limite de quantos veículos devem ser retornados 
      * @return -> lista de veículos ordenadas
+     * @throws RuntimeException
      */
     public static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
         
