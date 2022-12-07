@@ -17,9 +17,9 @@ public class App{
     private static final String SALVAR_VEICULOS = "resources/veiculosSalvos.txt";
     private static final String ESCOLHAS_USUARIO = "config/escolhaUsuario.txt";
 
-    private static final App app = new App();
-    private static Frota frota = new Frota();  
-    private static Scanner teclado = new Scanner(System.in);
+    private static final App APP = new App();
+    private static Frota FROTA = new Frota();
+    private static Scanner TECLADO = new Scanner(System.in);
 
     public static void main(String[] args) {
         
@@ -38,7 +38,7 @@ public class App{
         do{
 
             imprimiOpcoes();
-            escolha = teclado.nextLine();
+            escolha = TECLADO.nextLine();
             continuar = trataOpcoesReflexao(escolha);
 
         }while(continuar);
@@ -57,11 +57,9 @@ public class App{
     public static Veiculo retornaVeiculoFrota(){
 
         System.out.println("Informe a placa do veículo");
-        String placa = teclado.nextLine();
+        String placa = TECLADO.nextLine();
 
-        Veiculo veiculo = retornaVeiculo(placa, "placaFinalizar");
-
-        return veiculo;
+        return retornaVeiculo(placa, "placaFinalizar");
 
     }
     public static void gerarRelatorio(){
@@ -84,12 +82,12 @@ public class App{
      */
     private static Veiculo retornaVeiculo(String placa, String tratamento){
 
-        if(frota.getVeiculos().isEmpty()){
+        if(FROTA.getVeiculos().isEmpty()){
             System.out.println("Não existe veículos cadastrados");
         }
 
 
-        Veiculo veiculo = frota.localizarVeiculo(placa);
+        Veiculo veiculo = FROTA.localizarVeiculo(placa);
 
         if(veiculo != null){
             return veiculo;
@@ -103,7 +101,7 @@ public class App{
                 return null;
             }else{
                 System.out.println("Informe uma placa válida: ");
-                String placa_nova = teclado.nextLine();
+                String placa_nova = TECLADO.nextLine();
                 retornaVeiculo(placa_nova, "incluirRota");
             }
         }
@@ -119,12 +117,12 @@ public class App{
     public static void incluirRota(){
 
         System.out.println("Informe a placa do veículo que será feita a rota: ");
-        String placa = teclado.nextLine();
+        String placa = TECLADO.nextLine();
         Veiculo veiculo = retornaVeiculo(placa, "placa");
         System.out.println("Informe o tamanho da rota: ");
-        String km_total = teclado.nextLine();
+        String km_total = TECLADO.nextLine();
         System.out.println("Informe a data que foi feita a rota: ");
-        String data = teclado.nextLine();
+        String data = TECLADO.nextLine();
 
         criaRota(data, km_total, veiculo);
 
@@ -269,7 +267,7 @@ public class App{
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-            for(Veiculo veiculo : frota.getVeiculos()){
+            for(Veiculo veiculo : FROTA.getVeiculos()){
                 
                 String classe_imprimir = veiculo.getClass().getName();
 
@@ -306,13 +304,13 @@ public class App{
     public static void criaVeiculo(){
 
         System.out.println("Informe o tipo do veículo: ");
-        String tipo = teclado.nextLine();
+        String tipo = TECLADO.nextLine();
         System.out.println("Informe a placa do veículo: ");
-        String placa = teclado.nextLine();
+        String placa = TECLADO.nextLine();
         System.out.println("Informe o valor de venda do veículo: ");
-        String valor_venda = teclado.nextLine();
+        String valor_venda = TECLADO.nextLine();
         System.out.println("Informe o km médio do veículo: ");
-        String km_medio = teclado.nextLine();
+        String km_medio = TECLADO.nextLine();
 
         criarVeiculo(tipo, placa, valor_venda, km_medio);
 
@@ -335,22 +333,22 @@ public class App{
         switch(tipo){
 
             case "carro":
-                frota.addVeiculo(new Carro(placa, valor_venda_convertido, km_medio_convertido));
+                FROTA.addVeiculo(new Carro(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "van":
-                frota.addVeiculo(new Van(placa, valor_venda_convertido, km_medio_convertido));
+                FROTA.addVeiculo(new Van(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "furgao":
             case "furgão":
-                frota.addVeiculo(new Furgao(placa, valor_venda_convertido, km_medio_convertido));
+                FROTA.addVeiculo(new Furgao(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             case "caminhao":
             case "caminhão":
-                frota.addVeiculo(new Caminhao(placa, valor_venda_convertido, km_medio_convertido));
+                FROTA.addVeiculo(new Caminhao(placa, valor_venda_convertido, km_medio_convertido));
                 break;
             default:
                 System.out.println("Este tipo não existe, informe um válido (Carro, Van, Furgao ou Caminhao): ");
-                String novo_tipo = teclado.nextLine();
+                String novo_tipo = TECLADO.nextLine();
                 criarVeiculo(novo_tipo, placa, valor_venda, km_medio);                
         }
 
@@ -358,112 +356,15 @@ public class App{
 
     }
 
-    public static void imprimiVeiculosComAs3MaioresRotas(){
-
-        try {
-            veiculosMaioresRotas(frota, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-
-        
-        List<Veiculo> veiculos = veiculosMaioresRotas(frota, 3);
-
-        for (Veiculo veiculo : veiculos) {
-            System.out.println(veiculo.gerarRelatorio());
-        }
-    }
-
-    public static void imprimiKmMedia(){
-
-        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(frota));
-
-    }
-
-    public static void imprimiListaOrdenadaDecrescente(){
-
-        custosDecrescentes(frota).forEach(v -> System.out.println(v.gerarRelatorio()));
-
-    }
-
-    /** STREAMS INÍCIO */
-    
-    public static double kmMediaTodasRotas(Frota frota){
-        
-        double media = frota.getVeiculos().stream()
-            .mapToDouble(Veiculo :: quilometragem)
-            .average()
-            .getAsDouble();
-
-        return media;
-    }
-
-    /**
-     * @param frota -> recebe a frota de veículos a ser localizada
-     * @param limit -> limite de quantos veículos devem ser retornados 
-     * @return -> lista de veículos ordenadas
-     * @throws RuntimeException
-     */
-    private static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
-        
-        if(frota.getVeiculos().size() >= limit){
-
-            List<Veiculo> veiculos = frota.getVeiculos()
-                    .stream()
-                    .sorted(((v1, v2) ->{
-                        double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
-                        double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
-
-                        if(maior_rota_v1 > maior_rota_v2){
-                            return 1;
-                        }else{
-                            return -1;
-                        }
-                    }))
-                    .limit(limit)
-                    .collect(Collectors.toList());
-
-            return veiculos;
-
-        }else{
-            throw new RuntimeException("A frota não possui veiculos suficientes para consulta");
-        }
-
-        
-    }
-
-    public static double retornaMaiorRotaVeiculo(Veiculo veiculo){
-
-        OptionalDouble maior_rota =  veiculo.getRotas()
-                .stream()
-                .mapToDouble(Rota::getKmTotal)
-                .max()
-                ;
-
-        if(maior_rota.isPresent()){
-            return maior_rota.getAsDouble();
-        }else{
-            return 0;
-        }
-
-
-
-
-
-    }
-
-    public static List<Veiculo> custosDecrescentes(Frota frota){
-
-        return frota.getVeiculos()
-                .stream()
-                .sorted((v1,v2) -> ((v1.calcularCustos()+v1.totalCustosAdicionais())<(v2.calcularCustos()+v2.totalCustosAdicionais()))?1:-1)
-                .collect(Collectors.toList());
-    }
-
-    /** STREAMS FIM */
-
     // reflexão
 
+    /**
+     *
+     * Este método pega todas as funções que engloba o app e a partir delas é analisado qual a escolha do usúario...
+     * ..., pós isso é executado tal método
+     * @param opcao-> opção escolhida pelo usuário
+     *
+     * */
     private static boolean trataOpcoesReflexao(String opcao){
 
         String classe = "codigo.App";
@@ -485,18 +386,114 @@ public class App{
                 for(Method metodo : metodos){
 
                     if(metodo.toString().contains(valor) && chave.equals(opcao)){
-                        metodo.invoke(app);
+                        metodo.invoke(APP);
                         return retorno.equals("true");
                     }                    
                 }
             }
 
-        } catch (SecurityException | ClassNotFoundException | FileNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        } catch (SecurityException | ClassNotFoundException | FileNotFoundException | IllegalAccessException
+                 | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
         return false;
 
+    }
+    /* Imprimi veículo com as 3 maiores rotas */
+    public static void imprimiVeiculosComAs3MaioresRotas(){
+
+        try {
+            veiculosMaioresRotas(FROTA, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        List<Veiculo> veiculos = veiculosMaioresRotas(FROTA, 3);
+
+        for (Veiculo veiculo : veiculos) {
+            System.out.println(veiculo.gerarRelatorio());
+        }
+    }
+    /* Imprimi km média de todos veículos de uma frota */
+    public static void imprimiKmMedia(){
+
+        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(FROTA));
+
+    }
+    /* Retorna a lista de custos em forma descrescente da frota de veículos */
+    public static void imprimiListaOrdenadaDecrescente(){
+
+        custosDecrescentes(FROTA).forEach(v -> System.out.println(v.gerarRelatorio()));
+
+    }
+
+    /** STREAM */
+
+    public static double kmMediaTodasRotas(Frota frota){
+
+        return frota.getVeiculos().stream()
+                .mapToDouble(Veiculo :: quilometragem)
+                .average()
+                .getAsDouble();
+    }
+    /**
+     * @param frota -> recebe a frota de veículos a ser localizada
+     * @param limit -> limite de quantos veículos devem ser retornados
+     * @return -> lista de veículos ordenadas
+     * @throws RuntimeException -> exception em relação ao tamanho da frota
+     */
+    private static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
+
+        if(frota.getVeiculos().size() >= limit){
+
+            return frota.getVeiculos()
+                    .stream()
+                    .sorted(((v1, v2) ->{
+                        double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
+                        double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
+
+                        if(maior_rota_v1 > maior_rota_v2){
+                            return 1;
+                        }else{
+                            return -1;
+                        }
+                    }))
+                    .limit(limit)
+                    .collect(Collectors.toList());
+
+        }else{
+            throw new RuntimeException("A frota não possui veiculos suficientes para consulta");
+        }
+
+
+    }
+    public static double retornaMaiorRotaVeiculo(Veiculo veiculo){
+
+        OptionalDouble maior_rota =  veiculo.getRotas()
+                .stream()
+                .mapToDouble(Rota::getKmTotal)
+                .max()
+                ;
+
+        if(maior_rota.isPresent()){
+            return maior_rota.getAsDouble();
+        }else{
+            return 0;
+        }
+
+
+
+
+
+    }
+    public static List<Veiculo> custosDecrescentes(Frota frota){
+
+        return frota.getVeiculos()
+                .stream()
+                .sorted((v1,v2) -> ((v1.calcularCustos()+v1.totalCustosAdicionais())<(v2.calcularCustos()+v2.totalCustosAdicionais()))?1:-1)
+                .collect(Collectors.toList());
     }
 
 
