@@ -280,10 +280,22 @@ public class App{
                 }else if(classe_imprimir.contains("Caminhao")){
                     classe_imprimir = "Caminhao";
                 }
-                
 
-                bufferedWriter.write(classe_imprimir + ";" + veiculo.getPlaca() + ";" + 
-                veiculo.getValorVenda() + ";" + veiculo.getKmMedio());
+                bufferedWriter.write(classe_imprimir + ";" + veiculo.getPlaca() + ";" +
+                        veiculo.getValorVenda() + ";" + veiculo.getKmMedio());
+
+
+                if(veiculo.getRotas().size() > 0){
+
+                    bufferedWriter.newLine();
+                    bufferedWriter.write("Rota;");
+
+                    for(Rota rotas : veiculo.getRotas()){
+                        bufferedWriter.write(rotas.getKmTotal() + ";" + rotas.getData().dataFormatada());
+                    }
+
+                }
+
                 bufferedWriter.newLine();
             }
 
@@ -409,12 +421,6 @@ public class App{
             System.out.println(e.getMessage());
         }
 
-
-        List<Veiculo> veiculos = veiculosMaioresRotas(FROTA, 3);
-
-        for (Veiculo veiculo : veiculos) {
-            System.out.println(veiculo.gerarRelatorio());
-        }
     }
     /* Imprimi km média de todos veículos de uma frota */
     public static void imprimiKmMedia(){
