@@ -3,9 +3,7 @@ package codigo;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.OptionalDouble;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import codigo.Exceptions.ExceptionRouteTooBig;
@@ -45,13 +43,15 @@ public class App{
 
 
     }
-    public static void localizaVeiculoFrota(){
+    public static boolean localizaVeiculoFrota(){
 
         Veiculo veiculo = retornaVeiculoFrota();
         
         if(veiculo != null){
             System.out.println("Veículo existe"); 
         }
+
+        return true;
         
     }
     public static Veiculo retornaVeiculoFrota(){
@@ -62,7 +62,7 @@ public class App{
         return retornaVeiculo(placa, "placaFinalizar");
 
     }
-    public static void gerarRelatorio(){
+    public static boolean gerarRelatorio(){
     
         Veiculo veiculo = retornaVeiculoFrota();
 
@@ -71,6 +71,8 @@ public class App{
         }else{
             System.out.println("Veículo não existe");
         }
+
+        return true;
 
     }
 
@@ -114,7 +116,7 @@ public class App{
     /**
      * pega as informações para incluir uma rota
      */
-    public static void incluirRota(){
+    public static boolean incluirRota(){
 
         System.out.println("Informe a placa do veículo que será feita a rota: ");
         String placa = TECLADO.nextLine();
@@ -125,6 +127,8 @@ public class App{
         String data = TECLADO.nextLine();
 
         criaRota(data, km_total, veiculo);
+
+        return true;
 
     }
 
@@ -182,32 +186,23 @@ public class App{
             case "0":
                 return false;
             case "1":
-                carregaArquivo();
-                return true;
+                return carregaArquivo();
             case "2":
-                salvarArquivo();
-                return true;
+                return salvarArquivo();
             case "3":
-                criaVeiculo();
-                return true;
+                return criaVeiculo();
             case "4":
-                incluirRota();
-                return true;
+                return incluirRota();
             case "5":
-                localizaVeiculoFrota();
-                return true;
+                return localizaVeiculoFrota();
             case "6":
-                gerarRelatorio();
-                return true;
+                return gerarRelatorio();
             case "7":
-                    imprimiVeiculosComAs3MaioresRotas();
-                return true;
+                return imprimiVeiculosComAs3MaioresRotas();
             case "8":
-                imprimiKmMedia();
-                return true;
+                return imprimiKmMedia();
             case "9":
-                imprimiListaOrdenadaDecrescente();
-                return true;                        
+                return imprimiListaOrdenadaDecrescente();
             default:
                 System.out.println("Escolha inválida");
                 return true;
@@ -218,7 +213,7 @@ public class App{
 
     /**
      */
-    public static void carregaArquivo(){
+    public static boolean carregaArquivo(){
 
         File file = new File(VEICULOS_TXT);
 
@@ -246,11 +241,13 @@ public class App{
 
             bufferedReader.close();
             fileReader.close();
+            return true;
 
         } catch (IOException e) {
             // throw new RuntimeException("ERROR: " + e);
             System.out.println(" \nNão foi possivel ler o arquivo devido: ");
             System.out.println("\n"+e.getMessage()+"\n");
+            return false;
             
         }
     }
@@ -258,7 +255,7 @@ public class App{
     /**
      * método criado para salvar um arquivo com os dados do vetor de veículos
      */
-    public static void salvarArquivo(){
+    public static boolean salvarArquivo(){
 
         File file = new File(SALVAR_VEICULOS);
 
@@ -301,19 +298,21 @@ public class App{
 
             bufferedWriter.close();
             fileWriter.close();
+            return true;
         
         } catch (IOException e) {
             
             // throw new RuntimeException("ERROR: " + e);
             System.out.println(" \nNão foi possivel ler o arquivo devido: ");
             System.out.println("\n"+e.getMessage()+"\n");
+            return false;
         }
     }
 
     /**
      * cria um veículo através de dados colteados pelo usuário
      */
-    public static void criaVeiculo(){
+    public static boolean criaVeiculo(){
 
         System.out.println("Informe o tipo do veículo: ");
         String tipo = TECLADO.nextLine();
@@ -325,6 +324,8 @@ public class App{
         String km_medio = TECLADO.nextLine();
 
         criarVeiculo(tipo, placa, valor_venda, km_medio);
+
+        return true;
 
     }
 
@@ -368,6 +369,34 @@ public class App{
 
     }
 
+    /* Imprimi veículo com as 3 maiores rotas */
+    public static boolean imprimiVeiculosComAs3MaioresRotas(){
+
+        try {
+            veiculosMaioresRotas(FROTA, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+    /* Imprimi km média de todos veículos de uma frota */
+    public static boolean imprimiKmMedia(){
+
+        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(FROTA));
+
+        return true;
+
+    }
+    /* Retorna a lista de custos em forma descrescente da frota de veículos */
+    public static boolean imprimiListaOrdenadaDecrescente(){
+
+        custosDecrescentes(FROTA).forEach(v -> System.out.println(v.gerarRelatorio()));
+
+        return true;
+    }
+
     // reflexão
 
     /**
@@ -379,7 +408,29 @@ public class App{
      * */
     private static boolean trataOpcoesReflexao(String opcao){
 
+        try {
+
+            HashMap<String, Method> metodos = retornaHashMetodos();
+
+            if(metodos.get(opcao) != null){
+                return (boolean) metodos.get(opcao).invoke(APP);
+            }else{
+                return false;
+            }
+
+        } catch (SecurityException | IllegalAccessException
+                 | IllegalArgumentException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    private static HashMap<String, Method> retornaHashMetodos(){
+
         String classe = "codigo.App";
+
+        HashMap<String, Method> metodos_hash = new HashMap<>();
 
         try {
 
@@ -390,48 +441,24 @@ public class App{
             while(leitor.hasNext()){
 
                 String[] metodoTxt = leitor.nextLine().split(";");
-                
+
                 String chave = metodoTxt[0];
                 String valor = metodoTxt[1];
-                String retorno = metodoTxt[2];
 
                 for(Method metodo : metodos){
 
-                    if(metodo.toString().contains(valor) && chave.equals(opcao)){
-                        metodo.invoke(APP);
-                        return retorno.equals("true");
-                    }                    
+                    if(metodo.toString().contains(valor)){
+                        metodos_hash.put(chave,metodo);
+                    }
                 }
             }
 
-        } catch (SecurityException | ClassNotFoundException | FileNotFoundException | IllegalAccessException
-                 | IllegalArgumentException | InvocationTargetException e) {
+        } catch (SecurityException | ClassNotFoundException | FileNotFoundException | IllegalArgumentException e
+                 ) {
             e.printStackTrace();
         }
 
-        return false;
-
-    }
-    /* Imprimi veículo com as 3 maiores rotas */
-    public static void imprimiVeiculosComAs3MaioresRotas(){
-
-        try {
-            veiculosMaioresRotas(FROTA, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-    /* Imprimi km média de todos veículos de uma frota */
-    public static void imprimiKmMedia(){
-
-        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(FROTA));
-
-    }
-    /* Retorna a lista de custos em forma descrescente da frota de veículos */
-    public static void imprimiListaOrdenadaDecrescente(){
-
-        custosDecrescentes(FROTA).forEach(v -> System.out.println(v.gerarRelatorio()));
+        return metodos_hash;
 
     }
 
