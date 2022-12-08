@@ -7,6 +7,7 @@ import codigo.Fabricas.FabricasVeiculos;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -287,6 +288,53 @@ public class App{
         return true;
     }
 
+    /**
+     * retorna rotas de acordo com uma data
+     * @return -> sempre true
+     */
+    public static boolean imprimiRotasPorData(){
+
+        System.out.println("Informe a data que deseja: ");
+        String data = TECLADO.nextLine();
+
+        String regex = "\\d+";
+        String data_split[] = data.split("/");
+
+        data = data.replaceAll("/", "");
+
+        System.out.println(data);
+
+        if(data.matches(regex)){
+
+            Data data_enviar = new Data(Integer.parseInt(data_split[0]),
+            Integer.parseInt(data_split[1]), Integer.parseInt(data_split[2]));
+
+            List<ArrayList<Rota>> rotas = retornaRotasPorData(data_enviar);
+
+            if(rotas != null ){
+
+                rotas.forEach(array ->{
+
+                    array.forEach(rota ->{
+        
+                        System.out.println("Tamanho da rota: " + rota.getKmTotal());
+        
+                    });
+        
+                });
+
+            }else{
+                System.out.println("Não existem rotas nesta data");
+            }
+
+        }else{
+            System.out.println("Data inválida");
+        }
+
+        return true;
+
+    }
+
     // Reflexão
 
     /**
@@ -512,6 +560,41 @@ public class App{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param data -> recebe a data para ser analisada
+     * @return -> retorna uma lista de rotas
+     */
+    private static List<ArrayList<Rota>> retornaRotasPorData(Data data){
+
+        return FROTA.getVeiculos()
+            .stream()
+            .filter(veiculo -> !retornaRotaPorData(veiculo, data).equals(null))
+            .map(veiculo -> veiculo.getRotas())
+            .collect(Collectors.toList());
+
+    }
+
+    /**
+     * metodo auxiliar para retorna uma lista de rotas
+     * 
+     * @param veiculo -> recebe um veiculo para analise
+     * @param data -> recebe um data para comparação
+     * @return
+     */
+    private static ArrayList<Rota> retornaRotaPorData(Veiculo veiculo, Data data){
+
+        ArrayList<Rota> lista = (ArrayList<Rota>) veiculo.getRotas()
+            .stream()
+            .filter(rota -> rota.getData().equals(data))
+            .collect(Collectors.toList());
+
+        if(lista != null){
+            return lista;
+        }else{
+            return null;
+        }
+
+    }
 
     // Métodos ultrapassados que ainda funcionam
 

@@ -8,3 +8,4 @@
 7;imprimiVeiculosComAs3MaioresRotas;true
 8;imprimiKmMedia;true
 9;imprimiListaOrdenadaDecrescente;true
+10;imprimiRotasPorData;true
