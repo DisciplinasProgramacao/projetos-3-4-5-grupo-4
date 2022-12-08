@@ -10,7 +10,7 @@ public class Furgao extends Veiculo{
 
     public Furgao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE= new Tanque((int)FurgaoEnum.TANQUE.getValor(),Combustivel.GASOLINA);
+        this.TANQUE= new Tanque(FurgaoEnum.TANQUE.getValor(),Combustivel.GASOLINA);
     }
 
     //Overrides

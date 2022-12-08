@@ -9,8 +9,8 @@ public class Tanque {
     private double qtnAtual;
 
     // ICombustivel tipo
-    public Tanque(int capacidade, Combustivel tipo) {
-        this.capacidade = capacidade;
+    public Tanque(double capacidade, Combustivel tipo) {
+        this.capacidade = (int)capacidade;
         combustivel = tipo;
 
     }

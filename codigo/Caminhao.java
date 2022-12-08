@@ -10,7 +10,7 @@ public class Caminhao extends Veiculo{
 
     public Caminhao(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque((int)CaminhaoEnum.TANQUE.getValor(),Combustivel.DIESEL);
+        this.TANQUE = new Tanque(CaminhaoEnum.TANQUE.getValor(),Combustivel.DIESEL);
     }
 
     // Override

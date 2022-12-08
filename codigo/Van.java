@@ -10,7 +10,7 @@ public class Van extends Veiculo{
 
     public Van(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque((int)VanEnum.TANQUE.getValor(), Combustivel.GASOLINA);
+        this.TANQUE = new Tanque(VanEnum.TANQUE.getValor(), Combustivel.GASOLINA);
     }
 
     //Overrides

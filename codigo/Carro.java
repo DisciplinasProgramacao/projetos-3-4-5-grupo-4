@@ -10,7 +10,7 @@ public class Carro extends Veiculo {
 
     public Carro(String placa, double valorVenda, double kmMedio) {
         super(placa, valorVenda, kmMedio);
-        this.TANQUE = new Tanque((int)CarroEnum.TANQUE.getValor(),Combustivel.GASOLINA);
+        this.TANQUE = new Tanque(CarroEnum.TANQUE.getValor(),Combustivel.GASOLINA);
     }
 
     // Overrides
@@ -39,9 +39,9 @@ public class Carro extends Veiculo {
     @Override
     public String gerarRelatorio() {
         StringBuilder relatorio = new StringBuilder("\nVeículo : "+"Carro"+"\n");
-        relatorio.append("\nPlaca: " + this.getPlaca() + "\n");
-        relatorio.append("Placa: " + this.getPlaca() + "\n");
+        relatorio.append("\nPlaca: " + this.getPlaca() + "\n");        
         relatorio.append("Seguro: " + this.calcularSeguro() + "\n");
+        relatorio.append("IPVA: " + this.calcularIPVA() + "\n");
         relatorio.append("Número de Rotas realizadas: " + this.rotas.size() + "\n" );
         relatorio.append("Total de Gastos: " + "R$" + this.calcularCustos() +
          "\n"+ "\n");
