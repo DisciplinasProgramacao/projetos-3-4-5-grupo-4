@@ -17,6 +17,7 @@ public class Frota {
      * @return true -> adicionado com sucesso, false -> deu algum erro;
      */
     public boolean addVeiculo(Veiculo v) {
+        
         return this.veiculos.add(v);
     }
 

@@ -1,13 +1,8 @@
 package codigo.Fabricas;
 
-
-
 import java.util.HashMap;
 
-
-
-
-public  class ColecaoFabricas<t> {
+public class ColecaoFabricas<t> {
 
     private HashMap<String, IFabricavel<t>> Confeccionaria;
 

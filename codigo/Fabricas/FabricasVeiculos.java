@@ -1,11 +1,4 @@
 package codigo.Fabricas;
-
-
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 import codigo.Veiculo;
 
 /**

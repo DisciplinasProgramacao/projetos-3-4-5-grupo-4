@@ -15,13 +15,14 @@ import java.util.stream.Collectors;
 public class App{
 
     private static final String PATH_OPCOES_APP = "codigo/config/opcoesApp.txt";
-    private static final String VEICULOS_TXT = "codigo/resources/veiculos.txt";
+    //private static final String VEICULOS_TXT = "codigo/resources/veiculos.txt";
     private static final String SALVAR_VEICULOS = "codigo/resources/veiculosSalvos.txt";
     private static final String ESCOLHAS_USUARIO = "codigo/config/escolhaUsuario.txt";
 
     private static final App APP = new App();
     private static Frota FROTA = new Frota();
     private static Scanner TECLADO = new Scanner(System.in);
+    private static FabricasVeiculos FABRICAS_VEICULO = new FabricasVeiculos();
 
     public static void main(String[] args) {
         
@@ -47,6 +48,9 @@ public class App{
 
 
     }
+    /**
+     * @return -> sempre será true pois mesmo que o veículo não exista o programa voltará a ser executado
+     */
     public static boolean localizaVeiculoFrota(){
 
         Veiculo veiculo = retornaVeiculoFrota();
@@ -58,6 +62,9 @@ public class App{
         return true;
         
     }
+    /**
+     * @return -> retorna o veículo caso seja econtrado na frota
+     */
     public static Veiculo retornaVeiculoFrota(){
 
         System.out.println("Informe a placa do veículo");
@@ -66,6 +73,9 @@ public class App{
         return retornaVeiculo(placa, "placaFinalizar");
 
     }
+    /**
+     * @return -> sempre retorna true pois caso o veículo não exista o programa irá rodar normalmente
+     */
     public static boolean gerarRelatorio(){
     
         Veiculo veiculo = retornaVeiculoFrota();
@@ -81,44 +91,8 @@ public class App{
     }
 
     /**
-     * @param placa -> recebe a placa do veículo a ser procurado
-     * @param tratamento -> dependendo do método que chama esta função ele devolve um resultado diferente
-     *, então, para que cada tratamento seja feito em uma mesma função, ele trata cada caso de um jeito específico
-     * @return -> retorna o veículo achado
-     */
-    private static Veiculo retornaVeiculo(String placa, String tratamento){
-
-        if(FROTA.getVeiculos().isEmpty()){
-            System.out.println("Não existe veículos cadastrados");
-        }
-
-
-        Veiculo veiculo = FROTA.localizarVeiculo(placa);
-
-        if(veiculo != null){
-            return veiculo;
-        }
-
-        if(tratamento.contains("placa")){
-
-            System.out.println("Veiculo não existe");
-
-            if(tratamento.contains("Finalizar")){
-                return null;
-            }else{
-                System.out.println("Informe uma placa válida: ");
-                String placa_nova = TECLADO.nextLine();
-                retornaVeiculo(placa_nova, "incluirRota");
-            }
-        }
-
-        return null;
-        
-
-    }
-
-    /**
      * pega as informações para incluir uma rota
+     * @return -> retorna true caso seja para o programa continuar a ser executado;
      */
     public static boolean incluirRota(){
 
@@ -130,110 +104,43 @@ public class App{
         System.out.println("Informe a data que foi feita a rota: ");
         String data = TECLADO.nextLine();
 
-        criaRota(data, km_total, veiculo);
-
-        return true;
+        return criaRota(data, km_total, veiculo);
 
     }
 
     /**
-     * @param data -> recebe a data da rota
-     * @param km_total -> recebe o tamanho da rota
-     * @param veiculo -> recebe o veículo que fez a rota
-     */
-    private static void criaRota(String data, String km_total, Veiculo veiculo){
-
-        try {
-            veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
-            System.out.println("Rota salva com sucesso!");
-        } catch (ExceptionRouteTooBig e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
-    /**
-     * imprimi as opções disponíveis ao usuário
-     */
-    private static void imprimiOpcoes(){
-
-        int posicao = 0;
-
-        try (Scanner leitor = new Scanner(new File(PATH_OPCOES_APP))) {
-
-            while(leitor.hasNext()){
-
-                String linha = leitor.nextLine();
-
-                System.out.println(posicao + "- " + linha);
-
-                posicao++;
-            }
-
-
-        } catch (FileNotFoundException e) {
-            
-            System.out.println("Arquivo não encontrado: " + e.getMessage());
-        }
-
-    }
-
-    /**
-     * @param escolha -> recebe a esoclha da opção do usuário
-     * @return -> retorna true para caso seja para continuar a aplicação e false para encerrar
-     */
-    @Deprecated
-    private static boolean trataOpcoes(String escolha){
-
-        switch(escolha){
-            
-            case "0":
-                return false;
-            case "1":
-                return carregaArquivo();
-            case "2":
-                return salvarArquivo();
-            case "3":
-                return criaVeiculo();
-            case "4":
-                return incluirRota();
-            case "5":
-                return localizaVeiculoFrota();
-            case "6":
-                return gerarRelatorio();
-            case "7":
-                return imprimiVeiculosComAs3MaioresRotas();
-            case "8":
-                return imprimiKmMedia();
-            case "9":
-                return imprimiListaOrdenadaDecrescente();
-            default:
-                System.out.println("Escolha inválida");
-                return true;
-        }
-
-        
-    }
-
-    /**
+     * @return -> retorna true caso o arquivo seja lido com sucesso;
      */
     public static boolean carregaArquivo(){
 
-        File file = new File(VEICULOS_TXT);
+        File file = new File(SALVAR_VEICULOS);
 
         try {
 
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String linha = bufferedReader.readLine();
+            Veiculo veiculo_atual = null;
 
             do{
+
                 String[] dados = linha.split(";", 2);
 
-                Veiculo veiculo = new FabricasVeiculos().criar(dados[0], dados[1]);
-                FROTA.addVeiculo(veiculo);
+                if(dados[0].contains("Rota")){
+
+                    String[] informacoes = dados[1].split(";");
+                    veiculo_atual.addRota(new Rota(informacoes[1], Double.parseDouble(informacoes[0])));
+
+                }else{
+
+                    Veiculo veiculo = FABRICAS_VEICULO.criar(dados[0], dados[1]);
+                    FROTA.addVeiculo(veiculo);
+                    veiculo_atual = veiculo;
+
+                }
 
                 linha = bufferedReader.readLine();
+
             }while(linha != null);
 
             bufferedReader.close();
@@ -250,7 +157,8 @@ public class App{
     }
 
     /**
-     * método criado para salvar um arquivo com os dados do vetor de veículos
+     * método criado para salvar um arquivo com os dados da frota em relação aos veículos e suas rotas
+     * @return -> retorna true caso arquivo seja salvo com sucesso
      */
     public static boolean salvarArquivo(){
 
@@ -282,12 +190,15 @@ public class App{
                 if(veiculo.getRotas().size() > 0){
 
                     bufferedWriter.newLine();
-                    bufferedWriter.write("Rota;");
 
                     for(Rota rotas : veiculo.getRotas()){
-                        bufferedWriter.write(rotas.getKmTotal() + ";" + rotas.getData().dataFormatada());
-                    }
+                        bufferedWriter.write("Rota;" + rotas.getKmTotal() + ";" + rotas.getData().dataFormatada());
 
+                        if(veiculo.getRotas().get(veiculo.getRotas().size()-1) != rotas){
+                            bufferedWriter.newLine();
+                        }
+
+                    }
                 }
 
                 bufferedWriter.newLine();
@@ -300,7 +211,7 @@ public class App{
         } catch (IOException e) {
             
             // throw new RuntimeException("ERROR: " + e);
-            System.out.println(" \nNão foi possivel ler o arquivo devido: ");
+            System.out.println(" \nNão foi possivel salvar o arquivo: ");
             System.out.println("\n"+e.getMessage()+"\n");
             return false;
         }
@@ -308,6 +219,7 @@ public class App{
 
     /**
      * cria um veículo através de dados colteados pelo usuário
+     * @return -> sempre será true e programa irá continuar executando
      */
     public static boolean criaVeiculo(){
 
@@ -322,43 +234,27 @@ public class App{
 
         String detalhe = placa + ';' + valor_venda + ';' + km_medio;
 
-        Veiculo veiculo = new FabricasVeiculos().criar(tipo, detalhe);
-        FROTA.addVeiculo(veiculo);
+        Veiculo veiculo = FABRICAS_VEICULO.criar(tipo, detalhe);
+
+        if(veiculo != null){
+            System.out.println("Veículo criado com sucesso");
+            FROTA.addVeiculo(veiculo);
+        }else{
+            System.out.println("Veículo não criado");
+        }
 
         return true;
 
     }
 
-    private static Veiculo criarVeiculo(){
-
-
-        try {
-
-            Scanner leitor = new Scanner(new File(VEICULOS_TXT));
-
-            String veiculos[] = leitor.nextLine().toLowerCase().split(";", 2);
-
-            Veiculo veiculo = new FabricasVeiculos().criar(veiculos[0], veiculos[1]);
-
-            FROTA.addVeiculo(veiculo);
-
-            return veiculo;
-
-
-        } catch (SecurityException | FileNotFoundException | IllegalArgumentException e
-        ) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-    }
-
-    /* Imprimi veículo com as 3 maiores rotas */
+    /**
+     * imprimi veículo com as 3 maiores rotas 
+     * @return -> sempre true
+    */
     public static boolean imprimiVeiculosComAs3MaioresRotas(){
 
         try {
-            veiculosMaioresRotas(FROTA, 3).forEach( v -> System.out.println(v.gerarRelatorio()));
+            veiculosMaioresRotas(3).forEach( v -> System.out.println(v.gerarRelatorio()));
             return true;
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -366,30 +262,38 @@ public class App{
 
         return false;
     }
-    /* Imprimi km média de todos veículos de uma frota */
+    
+    /**  
+     * imprimi km média de todos veículos de uma frota
+     * @return -> sempre true
+    */
     public static boolean imprimiKmMedia(){
 
-        System.out.println("Km médio da frota: "  + kmMediaTodasRotas(FROTA));
+        System.out.println("Km médio da frota: "  + kmMediaTodasRotas());
 
         return true;
 
     }
-    /* Retorna a lista de custos em forma descrescente da frota de veículos */
+    
+    /**
+     * retorna a lista de custos em forma descrescente da frota de veículos
+     * @return -> sempre true
+     */
     public static boolean imprimiListaOrdenadaDecrescente(){
 
-        custosDecrescentes(FROTA).forEach(v -> System.out.println(v.gerarRelatorio()));
+        custosDecrescentes().forEach(v -> System.out.println(v.gerarRelatorio()));
 
         return true;
     }
 
-    // reflexão
+    // Reflexão
 
     /**
      *
-     * Este método pega todas as funções que engloba o app e a partir delas é analisado qual a escolha do usúario...
-     * ..., pós isso é executado tal método
+     * através de uma opção do usuário é executado tal método
      * @param opcao-> opção escolhida pelo usuário
-     *
+     * @return -> diz o retorno do método executado
+     * 
      * */
     private static boolean trataOpcoesReflexao(String opcao){
 
@@ -411,6 +315,11 @@ public class App{
         return false;
 
     }
+   
+    /**
+     * de acordo com a classe app, é recolhido todos seus métodos e colocados em um hash de acordo com tal opção do arquivo txt
+     * @return -> retorna os métodos do app;
+     */
     private static HashMap<String, Method> retornaHashMetodos(){
 
         String classe = "codigo.App";
@@ -447,32 +356,115 @@ public class App{
 
     }
 
-    /** STREAM */
+    // Métodos privados
 
-    public static double kmMediaTodasRotas(Frota frota){
+    /**
+     * imprimi as opções disponíveis ao usuário através de um arquivo txt
+     */
+    private static void imprimiOpcoes(){
 
-        return frota.getVeiculos().stream()
+        int posicao = 0;
+
+        try (Scanner leitor = new Scanner(new File(PATH_OPCOES_APP))) {
+
+            while(leitor.hasNext()){
+
+                String linha = leitor.nextLine();
+
+                System.out.println(posicao + "- " + linha);
+
+                posicao++;
+            }
+
+
+        } catch (FileNotFoundException e) {
+            
+            System.out.println("Arquivo não encontrado: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * @param placa -> recebe a placa do veículo a ser procurado
+     * @param tratamento -> dependendo do método que chama esta função ele devolve um resultado diferente
+     *, então, para que cada tratamento seja feito em uma mesma função, ele trata cada caso de um jeito específico
+     * @return -> retorna o veículo achado
+     */
+    private static Veiculo retornaVeiculo(String placa, String tratamento){
+
+        if(FROTA.getVeiculos().isEmpty()){
+            System.out.println("Não existe veículos cadastrados");
+        }
+
+        Veiculo veiculo = FROTA.localizarVeiculo(placa);
+
+        if(veiculo != null){
+            return veiculo;
+        }
+
+        if(tratamento.contains("placa")){
+
+            System.out.println("Veiculo não existe");
+
+            if(tratamento.contains("Finalizar")){
+                return null;
+            }else{
+                System.out.println("Informe uma placa válida: ");
+                String placa_nova = TECLADO.nextLine();
+                retornaVeiculo(placa_nova, "incluirRota");
+            }
+        }
+
+        return null;
+        
+    }
+
+     /**
+     * @param data -> recebe a data da rota
+     * @param km_total -> recebe o tamanho da rota
+     * @param veiculo -> recebe o veículo que fez a rota
+     * @return -> retormo sempre true, pois caso seja gerada uma excessão o programa continue
+     */
+    private static boolean criaRota(String data, String km_total, Veiculo veiculo){
+
+        try {
+            veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
+            System.out.println("Rota salva com sucesso!");
+            return true;
+        } catch (ExceptionRouteTooBig e) {
+            System.out.println("Rota não criada: " + e.getMessage());
+            return true;
+        }
+
+    }
+
+    /**
+     * @return -> retorna a média de quilometros rodados de uma frota
+     */
+    private static double kmMediaTodasRotas(){
+
+        return FROTA.getVeiculos().stream()
                 .mapToDouble(Veiculo :: quilometragem)
                 .average()
                 .getAsDouble();
     }
+    
     /**
-     * @param frota -> recebe a frota de veículos a ser localizada
      * @param limit -> limite de quantos veículos devem ser retornados
      * @return -> lista de veículos ordenadas
      * @throws RuntimeException -> exception em relação ao tamanho da frota
      */
-    private static List<Veiculo> veiculosMaioresRotas(Frota frota, int limit){
+    private static List<Veiculo> veiculosMaioresRotas(int limit){
 
-        if(frota.getVeiculos().size() >= limit){
+        if(FROTA.getVeiculos().size() >= limit){
 
-            return frota.getVeiculos()
+            return FROTA.getVeiculos()
                     .stream()
                     .sorted(((v1, v2) ->{
                         double maior_rota_v1 = retornaMaiorRotaVeiculo(v1);
                         double maior_rota_v2 = retornaMaiorRotaVeiculo(v2);
 
-                        if(maior_rota_v1 > maior_rota_v2){
+                        if(maior_rota_v1 < maior_rota_v2){
                             return 1;
                         }else{
                             return -1;
@@ -484,10 +476,14 @@ public class App{
         }else{
             throw new RuntimeException("A frota não possui veiculos suficientes para consulta");
         }
-
-
     }
-    public static double retornaMaiorRotaVeiculo(Veiculo veiculo){
+
+    /**
+     * metodo auxilizar para veiculos com as maiores rotas
+     * @param veiculo -> recebe o veículo a ser analisado
+     * @return -> retorna sua maior rota
+     */
+    private static double retornaMaiorRotaVeiculo(Veiculo veiculo){
 
         OptionalDouble maior_rota =  veiculo.getRotas()
                 .stream()
@@ -500,20 +496,56 @@ public class App{
         }else{
             return 0;
         }
-
-
-
-
-
     }
-    public static List<Veiculo> custosDecrescentes(Frota frota){
 
-        return frota.getVeiculos()
+    /**
+     * @return -> retorna uma lista de veículos em relação ao seus custos de forma decrescente
+     */
+    private static List<Veiculo> custosDecrescentes(){
+
+        return FROTA.getVeiculos()
                 .stream()
-                .sorted((v1,v2) -> ((v1.calcularCustos()+v1.totalCustosAdicionais())<(v2.calcularCustos()+v2.totalCustosAdicionais()))?1:-1)
+                .sorted((v1,v2) -> 
+                    ((v1.calcularCustos()+v1.totalCustosAdicionais()) < (v2.calcularCustos()+v2.totalCustosAdicionais())) ?1:-1)
                 .collect(Collectors.toList());
     }
 
 
+    // Métodos ultrapassados que ainda funcionam
+
+    /**
+     * @param escolha -> recebe a esoclha da opção do usuário
+     * @return -> retorna true para caso seja para continuar a aplicação e false para encerrar
+     */
+    @Deprecated
+    private static boolean trataOpcoes(String escolha){
+
+        switch(escolha){
+            
+            case "0":
+                return false;
+            case "1":
+                return carregaArquivo();
+            case "2":
+                return salvarArquivo();
+            case "3":
+                return criaVeiculo();
+            case "4":
+                return incluirRota();
+            case "5":
+                return localizaVeiculoFrota();
+            case "6":
+                return gerarRelatorio();
+            case "7":
+                return imprimiVeiculosComAs3MaioresRotas();
+            case "8":
+                return imprimiKmMedia();
+            case "9":
+                return imprimiListaOrdenadaDecrescente();
+            default:
+                System.out.println("Escolha inválida");
+                return true;
+        }
+    }
 
 }
