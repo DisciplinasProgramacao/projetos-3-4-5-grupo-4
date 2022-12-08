@@ -1,6 +1,7 @@
 package codigo;
 
 import codigo.Exceptions.ExceptionRouteTooBig;
+import codigo.Fabricas.FabricaRota;
 import codigo.Fabricas.FabricasVeiculos;
 
 import java.io.*;
@@ -23,6 +24,7 @@ public class App{
     private static Frota FROTA = new Frota();
     private static Scanner TECLADO = new Scanner(System.in);
     private static FabricasVeiculos FABRICAS_VEICULO = new FabricasVeiculos();
+    private static FabricaRota FABRICA_ROTA = new FabricaRota();
 
     public static void main(String[] args) {
         
@@ -128,8 +130,7 @@ public class App{
 
                 if(dados[0].contains("Rota")){
 
-                    String[] informacoes = dados[1].split(";");
-                    veiculo_atual.addRota(new Rota(informacoes[1], Double.parseDouble(informacoes[0])));
+                    veiculo_atual.addRota(FABRICA_ROTA.criar(dados[1]));
 
                 }else{
 
@@ -428,7 +429,8 @@ public class App{
     private static boolean criaRota(String data, String km_total, Veiculo veiculo){
 
         try {
-            veiculo.addRota(new Rota(data, Double.parseDouble(km_total)));
+            String informacoes = km_total + data;
+            veiculo.addRota(FABRICA_ROTA.criar(informacoes));
             System.out.println("Rota salva com sucesso!");
             return true;
         } catch (ExceptionRouteTooBig e) {
