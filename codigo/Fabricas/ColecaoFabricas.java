@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public  class ColecaoFabricas<t> {
 
-    protected HashMap<String, IFabricavel<t>> Confeccionaria;
+    private HashMap<String, IFabricavel<t>> Confeccionaria;
 
     
     public ColecaoFabricas( ){

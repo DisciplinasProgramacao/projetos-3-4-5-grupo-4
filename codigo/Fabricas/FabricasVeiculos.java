@@ -8,6 +8,9 @@ import java.util.Scanner;
 
 import codigo.Veiculo;
 
+/**
+ * já possui as fabricas dos veiculos do sistema
+ */
 public class FabricasVeiculos extends ColecaoFabricas<Veiculo> {
 
     public FabricasVeiculos()  {
