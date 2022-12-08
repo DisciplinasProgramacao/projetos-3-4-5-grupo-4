@@ -1,19 +1,23 @@
 package codigo;
 
+import codigo.Exceptions.ExceptionRouteTooBig;
+import codigo.Fabricas.FabricasVeiculos;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.Scanner;
 import java.util.stream.Collectors;
-
-import codigo.Exceptions.ExceptionRouteTooBig;
 
 public class App{
 
-    private static final String PATH_OPCOES_APP = "config/opcoesApp.txt";
-    private static final String VEICULOS_TXT = "resources/veiculos.txt";
-    private static final String SALVAR_VEICULOS = "resources/veiculosSalvos.txt";
-    private static final String ESCOLHAS_USUARIO = "config/escolhaUsuario.txt";
+    private static final String PATH_OPCOES_APP = "codigo/config/opcoesApp.txt";
+    private static final String VEICULOS_TXT = "codigo/resources/veiculos.txt";
+    private static final String SALVAR_VEICULOS = "codigo/resources/veiculosSalvos.txt";
+    private static final String ESCOLHAS_USUARIO = "codigo/config/escolhaUsuario.txt";
 
     private static final App APP = new App();
     private static Frota FROTA = new Frota();
@@ -218,22 +222,16 @@ public class App{
         File file = new File(VEICULOS_TXT);
 
         try {
-            
+
             FileReader fileReader = new FileReader(file);
 
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String linha = bufferedReader.readLine();
-            
+
             do{
 
-                String[] dados = linha.split(";");
-                String tipo = dados[0];
-                String placa = dados[1];
-                String valor_venda = dados[2];
-                String km_medio = dados[3];
-
-                criarVeiculo(tipo, placa, valor_venda, km_medio);
+                criarVeiculo();
 
                 linha = bufferedReader.readLine();
 
@@ -248,7 +246,7 @@ public class App{
             System.out.println(" \nNão foi possivel ler o arquivo devido: ");
             System.out.println("\n"+e.getMessage()+"\n");
             return false;
-            
+
         }
     }
 
@@ -323,46 +321,34 @@ public class App{
         System.out.println("Informe o km médio do veículo: ");
         String km_medio = TECLADO.nextLine();
 
-        criarVeiculo(tipo, placa, valor_venda, km_medio);
+        String detalhe = placa + ';' + valor_venda + ';' + km_medio;
+
+        Veiculo veiculo = new FabricasVeiculos().criar(tipo, detalhe);
+        FROTA.addVeiculo(veiculo);
 
         return true;
 
     }
 
-    /**
-     * @param tipo -> recebe o tipo do veículo a ser criado
-     * @param placa -> placa do veículo
-     * @param valor_venda -> valor de venda do veículo
-     * @param km_medio -> valor de kilometragem média por litro do veículo
-     * @return -> Retorna o veículo criado
-     */
-    private static Veiculo criarVeiculo(String tipo, String placa, String valor_venda, String km_medio){
+    private static Veiculo criarVeiculo(){
 
-        tipo = tipo.toLowerCase();
 
-        double valor_venda_convertido = Double.parseDouble(valor_venda);
-        double km_medio_convertido = Double.parseDouble(km_medio);
-        
-        switch(tipo){
+        try {
 
-            case "carro":
-                FROTA.addVeiculo(new Carro(placa, valor_venda_convertido, km_medio_convertido));
-                break;
-            case "van":
-                FROTA.addVeiculo(new Van(placa, valor_venda_convertido, km_medio_convertido));
-                break;
-            case "furgao":
-            case "furgão":
-                FROTA.addVeiculo(new Furgao(placa, valor_venda_convertido, km_medio_convertido));
-                break;
-            case "caminhao":
-            case "caminhão":
-                FROTA.addVeiculo(new Caminhao(placa, valor_venda_convertido, km_medio_convertido));
-                break;
-            default:
-                System.out.println("Este tipo não existe, informe um válido (Carro, Van, Furgao ou Caminhao): ");
-                String novo_tipo = TECLADO.nextLine();
-                criarVeiculo(novo_tipo, placa, valor_venda, km_medio);                
+            Scanner leitor = new Scanner(new File(VEICULOS_TXT));
+
+            String veiculos[] = leitor.nextLine().toLowerCase().split(";", 2);
+
+            Veiculo veiculo = new FabricasVeiculos().criar(veiculos[0], veiculos[1]);
+
+            FROTA.addVeiculo(veiculo);
+
+            return veiculo;
+
+
+        } catch (SecurityException | FileNotFoundException | IllegalArgumentException e
+        ) {
+            e.printStackTrace();
         }
 
         return null;
