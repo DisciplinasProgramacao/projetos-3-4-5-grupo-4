@@ -224,17 +224,16 @@ public class App{
         try {
 
             FileReader fileReader = new FileReader(file);
-
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-
             String linha = bufferedReader.readLine();
 
             do{
+                String[] dados = linha.split(";", 2);
 
-                criarVeiculo();
+                Veiculo veiculo = new FabricasVeiculos().criar(dados[0], dados[1]);
+                FROTA.addVeiculo(veiculo);
 
                 linha = bufferedReader.readLine();
-
             }while(linha != null);
 
             bufferedReader.close();
