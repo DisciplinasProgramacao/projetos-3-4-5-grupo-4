@@ -1,6 +1,6 @@
 # Projeto 4 - Gestão de Frota (parte 2)
 
-## Nota: 12,3
+## Nota: 12,3 --> 15,3
 
 ## Comentários
 	- Diagrama atualizado alguns dias depois do 'pull'
@@ -26,8 +26,8 @@
  	
 ### Requisitos da empresa no programa principal: 3,5/9 
 	- Quilometragem média das rotas da empresa: 2/3 -- testem. coloquei uma rota de 100 e ele aumentou uma média de 210 para 235 
-	- Filtro para busca de rotas por data: 0/3  
-	- Um dos dois abaixo: 1,5/3
+	- Filtro para busca de rotas por data: **2**/3  
+	- Um dos dois abaixo: **2,5**/3
 		- Os 3 veículos que mais fizeram rotas -- exceção 
 		- Lista de veículos ordenada decrescentemente por custos gerados -- veículos ok, mas dados zerados 
 
